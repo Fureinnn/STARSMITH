@@ -6,16 +6,16 @@
 }
 
 :root {
-    --primary: #7C3AED;
+    --primary: #7f00ff;
     --secondary: #F59E0B;
     --success: #10B981;
-    --background: #F8FAFC;
-    --text: #1E293B;
-    --accent: #EC4899;
-    --white: #FFFFFF;
-    --gray-100: #F1F5F9;
-    --gray-200: #E2E8F0;
-    --gray-300: #CBD5E1;
+    --background: #0a0a23;
+    --text: #e0e7ff;
+    --accent: #a855f7;
+    --white: #1e1e3f;
+    --gray-100: #2e2e5f;
+    --gray-200: #4b4b8c;
+    --gray-300: #6366f1;
     --gray-400: #94A3B8;
     --gray-500: #64748B;
     --gray-600: #475569;
@@ -36,6 +36,9 @@ body {
     color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
+    background-image: radial-gradient(circle at 20% 50%, rgba(127, 0, 255, 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
 }
 
 /* App Container */
@@ -51,8 +54,26 @@ body {
     border-radius: 16px;
     padding: 24px;
     margin: 24px 0;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 0 30px rgba(127, 0, 255, 0.3);
     border: 1px solid var(--gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+    animation: header-glow 4s ease-in-out infinite;
+}
+
+@keyframes header-glow {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
 }
 
 .header-content {
@@ -77,12 +98,13 @@ body {
 .app-title i {
     color: var(--primary);
     font-size: 2.5rem;
-    animation: dragon-pulse 2s ease-in-out infinite;
+    animation: star-pulse 3s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(127, 0, 255, 0.5);
 }
 
-@keyframes dragon-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+@keyframes star-pulse {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(180deg); }
 }
 
 .player-stats {
@@ -128,10 +150,11 @@ body {
 
 .xp-fill {
     height: 100%;
-    background: var(--gradient-success);
+    background: linear-gradient(90deg, var(--primary), var(--accent));
     border-radius: 6px;
     transition: width 0.5s ease;
     position: relative;
+    box-shadow: 0 0 10px rgba(127, 0, 255, 0.5);
 }
 
 .xp-fill::after {
@@ -164,9 +187,10 @@ body {
     border-radius: 12px;
     padding: 8px;
     margin-bottom: 24px;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 0 20px rgba(127, 0, 255, 0.2);
     gap: 4px;
     overflow-x: auto;
+    border: 1px solid var(--gray-200);
 }
 
 .nav-tab {
@@ -303,11 +327,18 @@ body {
     background: var(--white);
     border-radius: 12px;
     padding: 20px;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 0 15px rgba(127, 0, 255, 0.2);
     border: 1px solid var(--gray-200);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.task-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(127, 0, 255, 0.4);
+    border-color: var(--primary);
 }
 
 .task-card::before {
@@ -317,19 +348,25 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: var(--gradient-primary);
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    animation: task-glow 3s ease-in-out infinite;
+}
+
+@keyframes task-glow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
 
 .task-card.habit::before {
-    background: var(--gradient-primary);
+    background: linear-gradient(90deg, #ff6b6b, #ee5a52);
 }
 
 .task-card.daily::before {
-    background: var(--gradient-secondary);
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
 }
 
 .task-card.todo::before {
-    background: var(--gradient-success);
+    background: linear-gradient(90deg, #10b981, #34d399);
 }
 
 .task-card:hover {
@@ -384,23 +421,45 @@ body {
 }
 
 .difficulty-easy {
-    background: #DCFCE7;
-    color: #166534;
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .difficulty-medium {
-    background: #FEF3C7;
-    color: #92400E;
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .difficulty-hard {
-    background: #FEE2E2;
-    color: #991B1B;
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .difficulty-epic {
-    background: #F3E8FF;
-    color: #6B21A8;
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.difficulty-legendary {
+    background: rgba(236, 72, 153, 0.2);
+    color: #f472b6;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+.difficulty-cosmic {
+    background: rgba(127, 0, 255, 0.2);
+    color: #a855f7;
+    border: 1px solid rgba(127, 0, 255, 0.3);
+    animation: cosmic-glow 2s ease-in-out infinite;
+}
+
+@keyframes cosmic-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(127, 0, 255, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(127, 0, 255, 0.6); }
 }
 
 .task-actions {
@@ -503,6 +562,7 @@ body {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
 }
 
 .achievement-card.unlocked {
@@ -575,8 +635,22 @@ body {
     background: var(--white);
     border-radius: 12px;
     padding: 24px;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 0 20px rgba(127, 0, 255, 0.2);
     border: 1px solid var(--gray-200);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+    opacity: 0.7;
 }
 
 .stat-card h3 {
@@ -641,9 +715,11 @@ body {
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: var(--shadow-xl);
+    box-shadow: 0 0 30px rgba(127, 0, 255, 0.4);
+    border: 1px solid var(--gray-200);
     transform: scale(0.9);
     transition: transform 0.3s ease;
+    backdrop-filter: blur(20px);
 }
 
 .modal-overlay.active .modal {
@@ -830,9 +906,38 @@ body {
     position: absolute;
     width: 8px;
     height: 8px;
-    background: var(--secondary);
+    background: var(--primary);
     border-radius: 50%;
     animation: particle-float 2s ease-out forwards;
+    box-shadow: 0 0 6px var(--primary);
+}
+
+/* Add cosmic background stars */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(2px 2px at 20px 30px, rgba(127, 0, 255, 0.3), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(168, 85, 247, 0.2), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(59, 130, 246, 0.3), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(147, 51, 234, 0.2), transparent),
+        radial-gradient(2px 2px at 160px 30px, rgba(236, 72, 153, 0.1), transparent);
+    background-size: 200px 100px;
+    animation: stars-twinkle 20s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes stars-twinkle {
+    0% { opacity: 0.3; transform: translateY(0); }
+    25% { opacity: 0.8; }
+    50% { opacity: 0.4; transform: translateY(-10px); }
+    75% { opacity: 0.9; }
+    100% { opacity: 0.3; transform: translateY(0); }
 }
 
 @keyframes particle-float {

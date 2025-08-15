@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuestMaster - Gamified TODO</title>
+    <title>StarSmith's Crucible</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,8 +16,8 @@
         <header class="header">
             <div class="header-content">
                 <h1 class="app-title">
-                    <i class="fas fa-dragon"></i>
-                    QuestMaster
+                    <i class="fas fa-star"></i>
+                    StarSmith's Crucible
                 </h1>
                 <div class="player-stats">
                     <div class="stat-item">
@@ -25,11 +25,11 @@
                         <span class="stat-value" id="player-level">1</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">XP</span>
+                        <span class="stat-label">Stardust</span>
                         <span class="stat-value" id="player-xp">0</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-label">Gold</span>
+                        <span class="stat-label">Orbs</span>
                         <span class="stat-value" id="player-gold">0</span>
                     </div>
                     <div class="stat-item">
@@ -42,31 +42,31 @@
                 <div class="xp-bar">
                     <div class="xp-fill" id="xp-fill"></div>
                 </div>
-                <span class="xp-text" id="xp-text">0 / 100 XP</span>
+                <span class="xp-text" id="xp-text">0 / 100 Stardust</span>
             </div>
         </header>
 
         <!-- Navigation -->
         <nav class="nav-tabs">
             <button class="nav-tab active" data-tab="habits">
-                <i class="fas fa-heart"></i>
-                <span>Habits</span>
+                <i class="fas fa-flame"></i>
+                <span>StarCores</span>
             </button>
             <button class="nav-tab" data-tab="dailies">
-                <i class="fas fa-calendar-day"></i>
-                <span>Dailies</span>
+                <i class="fas fa-sun"></i>
+                <span>Daily Quests</span>
             </button>
             <button class="nav-tab" data-tab="todos">
-                <i class="fas fa-tasks"></i>
-                <span>To-Dos</span>
+                <i class="fas fa-scroll"></i>
+                <span>Cosmic Tasks</span>
             </button>
             <button class="nav-tab" data-tab="achievements">
                 <i class="fas fa-trophy"></i>
-                <span>Achievements</span>
+                <span>Codex</span>
             </button>
             <button class="nav-tab" data-tab="stats">
                 <i class="fas fa-chart-line"></i>
-                <span>Stats</span>
+                <span>Observatory</span>
             </button>
         </nav>
 
@@ -75,17 +75,17 @@
             <!-- Habits Tab -->
             <div class="tab-content active" id="habits-tab">
                 <div class="section-header">
-                    <h2>Habits</h2>
+                    <h2>StarCore Forge</h2>
                     <button class="add-btn" id="add-habit-btn">
                         <i class="fas fa-plus"></i>
-                        Add Habit
+                        Forge StarCore
                     </button>
                 </div>
                 <div class="tasks-container" id="habits-container">
                     <div class="empty-state" id="habits-empty">
-                        <i class="fas fa-seedling"></i>
-                        <h3>No habits yet!</h3>
-                        <p>Create your first habit to start building positive behaviors</p>
+                        <i class="fas fa-star"></i>
+                        <h3>No StarCores forged!</h3>
+                        <p>Forge your first StarCore to begin your cosmic journey</p>
                     </div>
                 </div>
             </div>
@@ -96,14 +96,14 @@
                     <h2>Daily Quests</h2>
                     <button class="add-btn" id="add-daily-btn">
                         <i class="fas fa-plus"></i>
-                        Add Daily
+                        Create Quest
                     </button>
                 </div>
                 <div class="tasks-container" id="dailies-container">
                     <div class="empty-state" id="dailies-empty">
                         <i class="fas fa-sun"></i>
                         <h3>No daily quests!</h3>
-                        <p>Add daily tasks to maintain your streak and earn consistent rewards</p>
+                        <p>Create daily quests to maintain your cosmic energy and earn stellar rewards</p>
                     </div>
                 </div>
             </div>
@@ -111,17 +111,17 @@
             <!-- To-Dos Tab -->
             <div class="tab-content" id="todos-tab">
                 <div class="section-header">
-                    <h2>To-Do Quests</h2>
+                    <h2>Cosmic Tasks</h2>
                     <button class="add-btn" id="add-todo-btn">
                         <i class="fas fa-plus"></i>
-                        Add To-Do
+                        Create Task
                     </button>
                 </div>
                 <div class="tasks-container" id="todos-container">
                     <div class="empty-state" id="todos-empty">
                         <i class="fas fa-scroll"></i>
-                        <h3>No quests available!</h3>
-                        <p>Create your first quest to start your adventure</p>
+                        <h3>No cosmic tasks available!</h3>
+                        <p>Create your first cosmic task to expand your stellar influence</p>
                     </div>
                 </div>
             </div>
@@ -129,7 +129,7 @@
             <!-- Achievements Tab -->
             <div class="tab-content" id="achievements-tab">
                 <div class="section-header">
-                    <h2>Achievements</h2>
+                    <h2>Cosmic Codex</h2>
                 </div>
                 <div class="achievements-grid" id="achievements-grid">
                     <!-- Achievements will be populated by JavaScript -->
@@ -139,11 +139,11 @@
             <!-- Stats Tab -->
             <div class="tab-content" id="stats-tab">
                 <div class="section-header">
-                    <h2>Statistics</h2>
+                    <h2>Stellar Observatory</h2>
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>Productivity Overview</h3>
+                        <h3>Cosmic Activity</h3>
                         <div class="stat-row">
                             <span>Tasks Completed Today</span>
                             <span id="tasks-today">0</span>
@@ -153,22 +153,22 @@
                             <span id="tasks-week">0</span>
                         </div>
                         <div class="stat-row">
-                            <span>Total Tasks Completed</span>
+                            <span>Total Stellar Tasks</span>
                             <span id="tasks-total">0</span>
                         </div>
                         <div class="stat-row">
                             <span>Current Streak</span>
-                            <span id="current-streak">0 days</span>
+                            <span id="current-streak">0 cycles</span>
                         </div>
                         <div class="stat-row">
                             <span>Best Streak</span>
-                            <span id="best-streak">0 days</span>
+                            <span id="best-streak">0 cycles</span>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <h3>Task Breakdown</h3>
+                        <h3>Stellar Arsenal</h3>
                         <div class="stat-row">
-                            <span>Active Habits</span>
+                            <span>Active StarCores</span>
                             <span id="active-habits">0</span>
                         </div>
                         <div class="stat-row">
@@ -176,11 +176,11 @@
                             <span id="active-dailies">0</span>
                         </div>
                         <div class="stat-row">
-                            <span>Pending To-Dos</span>
+                            <span>Cosmic Tasks</span>
                             <span id="active-todos">0</span>
                         </div>
                         <div class="stat-row">
-                            <span>Achievements Unlocked</span>
+                            <span>Codex Entries</span>
                             <span id="achievements-unlocked">0</span>
                         </div>
                     </div>
@@ -200,7 +200,7 @@
             </div>
             <form class="modal-body" id="task-form">
                 <div class="form-group">
-                    <label for="task-title">Task Title</label>
+                    <label for="task-title">Title</label>
                     <input type="text" id="task-title" placeholder="Enter task title" required>
                 </div>
                 <div class="form-group">
@@ -208,12 +208,14 @@
                     <textarea id="task-description" placeholder="Add more details about this task"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="task-difficulty">Difficulty</label>
+                    <label for="task-difficulty">Stellar Tier</label>
                     <select id="task-difficulty">
-                        <option value="easy">Easy (10 XP, 5 Gold)</option>
-                        <option value="medium">Medium (20 XP, 10 Gold)</option>
-                        <option value="hard">Hard (30 XP, 15 Gold)</option>
-                        <option value="epic">Epic (50 XP, 25 Gold)</option>
+                        <option value="easy">⭐ Spark (10 Stardust, 5 Orbs)</option>
+                        <option value="medium">🔥 Ember (20 Stardust, 10 Orbs)</option>
+                        <option value="hard">⚡ Flame (30 Stardust, 15 Orbs)</option>
+                        <option value="epic">💫 Nova (40 Stardust, 20 Orbs)</option>
+                        <option value="legendary">🌟 Supernova (50 Stardust, 25 Orbs)</option>
+                        <option value="cosmic">🌌 Cosmic (70 Stardust, 35 Orbs)</option>
                     </select>
                 </div>
                 <div class="form-group" id="due-date-group" style="display: none;">
@@ -222,7 +224,7 @@
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" id="cancel-btn">Cancel</button>
-                    <button type="submit" class="btn-primary" id="save-btn">Save Task</button>
+                    <button type="submit" class="btn-primary" id="save-btn">Forge</button>
                 </div>
             </form>
         </div>

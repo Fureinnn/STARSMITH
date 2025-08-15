@@ -2,33 +2,33 @@
 const ACHIEVEMENTS = [
     {
         id: 'first_task',
-        title: 'First Steps',
-        description: 'Complete your first task',
-        icon: '🌟',
+        title: 'Stellar Ignition',
+        description: 'Forge your first StarCore',
+        icon: '✨',
         unlocked: false,
         condition: (stats) => stats.totalCompleted >= 1
     },
     {
         id: 'task_master',
-        title: 'Task Master',
-        description: 'Complete 10 tasks',
-        icon: '👑',
+        title: 'Cosmic Adept',
+        description: 'Complete 10 stellar tasks',
+        icon: '🔮',
         unlocked: false,
         condition: (stats) => stats.totalCompleted >= 10
     },
     {
         id: 'task_legend',
-        title: 'Task Legend',
-        description: 'Complete 50 tasks',
-        icon: '🏆',
+        title: 'Star Forger',
+        description: 'Complete 50 stellar tasks',
+        icon: '⭐',
         unlocked: false,
         condition: (stats) => stats.totalCompleted >= 50
     },
     {
         id: 'task_champion',
-        title: 'Task Champion',
-        description: 'Complete 100 tasks',
-        icon: '⚡',
+        title: 'Cosmic Master',
+        description: 'Complete 100 stellar tasks',
+        icon: '🌌',
         unlocked: false,
         condition: (stats) => stats.totalCompleted >= 100
     },
@@ -74,49 +74,49 @@ const ACHIEVEMENTS = [
     },
     {
         id: 'habit_former',
-        title: 'Habit Former',
-        description: 'Create your first habit',
-        icon: '🌱',
+        title: 'StarCore Architect',
+        description: 'Forge your first StarCore',
+        icon: '🌟',
         unlocked: false,
         condition: (stats) => stats.habitsCreated >= 1
     },
     {
         id: 'daily_warrior',
-        title: 'Daily Warrior',
-        description: 'Complete all dailies in a day',
+        title: 'Stellar Guardian',
+        description: 'Complete all daily quests in a day',
         icon: '⚔️',
         unlocked: false,
         condition: (stats) => stats.dailiesCompletedToday > 0 && stats.activeDailies > 0 && stats.dailiesCompletedToday >= stats.activeDailies
     },
     {
         id: 'epic_conqueror',
-        title: 'Epic Conqueror',
-        description: 'Complete an Epic difficulty task',
-        icon: '🐉',
+        title: 'Nova Crusher',
+        description: 'Complete a Nova-tier task or higher',
+        icon: '💫',
         unlocked: false,
         condition: (stats) => stats.epicTasksCompleted >= 1
     },
     {
         id: 'productive_day',
-        title: 'Productive Day',
-        description: 'Complete 5 tasks in a single day',
-        icon: '💪',
+        title: 'Stellar Surge',
+        description: 'Complete 5 tasks in a single cosmic day',
+        icon: '🌠',
         unlocked: false,
         condition: (stats) => stats.tasksCompletedToday >= 5
     },
     {
         id: 'gold_collector',
-        title: 'Gold Collector',
-        description: 'Accumulate 500 gold',
-        icon: '💰',
+        title: 'Orb Harvester',
+        description: 'Accumulate 500 cosmic orbs',
+        icon: '🔮',
         unlocked: false,
         condition: (stats) => stats.gold >= 500
     },
     {
         id: 'xp_hunter',
-        title: 'XP Hunter',
-        description: 'Earn 1000 total XP',
-        icon: '🎮',
+        title: 'Stardust Collector',
+        description: 'Accumulate 1000 total stardust',
+        icon: '✨',
         unlocked: false,
         condition: (stats) => stats.totalXP >= 1000
     }

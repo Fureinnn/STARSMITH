@@ -124,7 +124,12 @@ class QuestMasterApp {
         const modalTitle = document.getElementById('modal-title');
         const dueDateGroup = document.getElementById('due-date-group');
         
-        modalTitle.textContent = `Add New ${type.charAt(0).toUpperCase() + type.slice(0, -1)}`;
+        const titles = {
+            habits: 'StarCore',
+            dailies: 'Daily Quest', 
+            todos: 'Cosmic Task'
+        };
+        modalTitle.textContent = `Forge New ${titles[type]}`;
         
         // Show due date only for todos
         if (type === 'todos') {
@@ -201,7 +206,12 @@ class QuestMasterApp {
         const modalTitle = document.getElementById('modal-title');
         const dueDateGroup = document.getElementById('due-date-group');
 
-        modalTitle.textContent = `Edit ${type.charAt(0).toUpperCase() + type.slice(0, -1)}`;
+        const titles = {
+            habits: 'StarCore',
+            dailies: 'Daily Quest',
+            todos: 'Cosmic Task'
+        };
+        modalTitle.textContent = `Edit ${titles[type]}`;
         
         // Show due date only for todos
         if (type === 'todos') {
@@ -220,7 +230,8 @@ class QuestMasterApp {
     }
 
     deleteTask(type, taskId) {
-        if (!confirm('Are you sure you want to delete this task?')) return;
+        const itemType = type === 'habits' ? 'StarCore' : type === 'dailies' ? 'Quest' : 'Cosmic Task';
+        if (!confirm(`Are you sure you want to destroy this ${itemType}?`)) return;
 
         this[type] = this[type].filter(t => t.id !== taskId);
         this.saveTasks(type);
@@ -246,7 +257,7 @@ class QuestMasterApp {
             this.player.stats.dailiesCompletedToday++;
         }
         
-        if (task.difficulty === 'epic') {
+        if (['epic', 'legendary', 'cosmic'].includes(task.difficulty)) {
             this.player.stats.epicTasksCompleted++;
         }
 
@@ -294,10 +305,12 @@ class QuestMasterApp {
 
     calculateRewards(difficulty) {
         const baseRewards = {
-            easy: { xp: 10, gold: 5 },
-            medium: { xp: 20, gold: 10 },
-            hard: { xp: 30, gold: 15 },
-            epic: { xp: 50, gold: 25 }
+            easy: { xp: 10, gold: 5 },      // Spark
+            medium: { xp: 20, gold: 10 },   // Ember  
+            hard: { xp: 30, gold: 15 },     // Flame
+            epic: { xp: 40, gold: 20 },     // Nova
+            legendary: { xp: 50, gold: 25 }, // Supernova
+            cosmic: { xp: 70, gold: 35 }    // Cosmic
         };
 
         return baseRewards[difficulty] || baseRewards.easy;
@@ -416,7 +429,7 @@ class QuestMasterApp {
         const xpPercentage = (this.player.xp / xpNeeded) * 100;
         
         document.getElementById('xp-fill').style.width = `${xpPercentage}%`;
-        document.getElementById('xp-text').textContent = `${this.player.xp} / ${xpNeeded} XP`;
+        document.getElementById('xp-text').textContent = `${this.player.xp} / ${xpNeeded} Stardust`;
     }
 
     renderTasks() {
@@ -458,23 +471,23 @@ class QuestMasterApp {
             actionsHTML = `
                 <div class="habit-actions">
                     <button class="habit-btn habit-negative" onclick="app.handleHabitAction(${task.id}, false)">
-                        <i class="fas fa-minus"></i> Negative
+                        <i class="fas fa-minus"></i> Diminish
                     </button>
                     <button class="habit-btn habit-positive" onclick="app.handleHabitAction(${task.id}, true)">
-                        <i class="fas fa-plus"></i> Positive
+                        <i class="fas fa-plus"></i> Energize
                     </button>
                 </div>
             `;
         } else {
             actionsHTML = `
                 <div class="task-actions">
-                    <button class="task-btn btn-complete" onclick="app.completeTask('${type}', ${task.id})" title="Complete Task">
+                    <button class="task-btn btn-complete" onclick="app.completeTask('${type}', ${task.id})" title="Complete ${type === 'habits' ? 'StarCore' : type === 'dailies' ? 'Quest' : 'Task'}">
                         <i class="fas fa-check"></i>
                     </button>
-                    <button class="task-btn btn-edit" onclick="app.editTask('${type}', ${task.id})" title="Edit Task">
+                    <button class="task-btn btn-edit" onclick="app.editTask('${type}', ${task.id})" title="Edit ${type === 'habits' ? 'StarCore' : type === 'dailies' ? 'Quest' : 'Task'}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="task-btn btn-delete" onclick="app.deleteTask('${type}', ${task.id})" title="Delete Task">
+                    <button class="task-btn btn-delete" onclick="app.deleteTask('${type}', ${task.id})" title="Destroy ${type === 'habits' ? 'StarCore' : type === 'dailies' ? 'Quest' : 'Task'}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -490,8 +503,8 @@ class QuestMasterApp {
                         <span class="difficulty-badge difficulty-${task.difficulty}">
                             ${task.difficulty.toUpperCase()}
                         </span>
-                        <span>+${rewards.xp} XP</span>
-                        <span>+${rewards.gold} Gold</span>
+                        <span>+${rewards.xp} Stardust</span>
+                        <span>+${rewards.gold} Orbs</span>
                         ${task.dueDate ? `<span><i class="fas fa-calendar"></i> ${new Date(task.dueDate).toLocaleDateString()}</span>` : ''}
                     </div>
                 </div>
@@ -507,8 +520,8 @@ class QuestMasterApp {
         document.getElementById('tasks-today').textContent = this.player.stats.tasksCompletedToday;
         document.getElementById('tasks-week').textContent = this.player.stats.tasksCompletedWeek;
         document.getElementById('tasks-total').textContent = this.player.stats.totalCompleted;
-        document.getElementById('current-streak').textContent = `${this.player.currentStreak} days`;
-        document.getElementById('best-streak').textContent = `${this.player.bestStreak} days`;
+        document.getElementById('current-streak').textContent = `${this.player.currentStreak} cycles`;
+        document.getElementById('best-streak').textContent = `${this.player.bestStreak} cycles`;
         
         document.getElementById('active-habits').textContent = this.habits.length;
         document.getElementById('active-dailies').textContent = this.dailies.length;
