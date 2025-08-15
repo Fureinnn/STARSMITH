@@ -485,6 +485,23 @@ class QuestMasterApp {
             xpFillDash.style.width = `${xpPercentage}%`;
             xpTextDash.textContent = `${this.player.xp} / ${xpNeeded} Stardust`;
         }
+
+        // Update floating header stats
+        this.updateFloatingHeader();
+    }
+
+    updateFloatingHeader() {
+        const headerLevel = document.getElementById('header-level');
+        const headerStardust = document.getElementById('header-stardust');
+        const headerOrbs = document.getElementById('header-orbs');
+        const headerStreak = document.getElementById('header-streak');
+
+        if (headerLevel) {
+            headerLevel.textContent = this.player.level;
+            headerStardust.textContent = this.player.totalXP;
+            headerOrbs.textContent = this.player.gold;
+            headerStreak.textContent = this.player.currentStreak;
+        }
     }
 
     renderTasks() {

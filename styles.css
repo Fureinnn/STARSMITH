@@ -52,11 +52,11 @@ body {
 .sidebar {
     width: 280px;
     background: var(--white);
-    border-right: 1px solid var(--gray-200);
+    border-left: 1px solid var(--gray-200);
     display: flex;
     flex-direction: column;
     position: fixed;
-    left: 0;
+    right: 0;
     top: 0;
     height: 100vh;
     z-index: 100;
@@ -131,11 +131,68 @@ body {
     text-align: center;
 }
 
+/* Floating Header */
+.floating-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 280px;
+    height: 60px;
+    background: rgba(30, 30, 63, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 50;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.floating-header .header-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.floating-header .header-title i {
+    color: var(--primary);
+    animation: star-pulse 3s ease-in-out infinite;
+}
+
+.floating-header .header-stats {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.floating-header .header-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: var(--text);
+}
+
+.floating-header .header-stat i {
+    color: var(--primary);
+    width: 16px;
+    text-align: center;
+}
+
+.floating-header .header-stat-value {
+    font-weight: 600;
+    color: var(--primary);
+}
+
 /* Main Container */
 .main-container {
     flex: 1;
-    margin-left: 280px;
-    padding: 24px;
+    margin-right: 280px;
+    padding: 84px 24px 24px 24px;
     min-height: 100vh;
     overflow-y: auto;
 }
@@ -586,7 +643,7 @@ body {
     display: none;
     position: fixed;
     top: 16px;
-    left: 16px;
+    right: 16px;
     z-index: 101;
     width: 48px;
     height: 48px;
@@ -1328,7 +1385,7 @@ body::before {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .sidebar {
-        transform: translateX(-100%);
+        transform: translateX(100%);
     }
     
     .sidebar.active {
@@ -1336,7 +1393,8 @@ body::before {
     }
     
     .main-container {
-        margin-left: 0;
+        margin-right: 0;
+        padding-top: 84px;
     }
     
     .mobile-menu-toggle {
@@ -1350,7 +1408,24 @@ body::before {
 
 @media (max-width: 768px) {
     .main-container {
-        padding: 16px;
+        padding: 84px 16px 16px 16px;
+    }
+    
+    .floating-header {
+        right: 0;
+        padding: 0 16px;
+    }
+    
+    .floating-header .header-stats {
+        gap: 12px;
+    }
+    
+    .floating-header .header-stat {
+        font-size: 0.75rem;
+    }
+    
+    .floating-header .header-title {
+        font-size: 1.1rem;
     }
     
     .dashboard-header {
