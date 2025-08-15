@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarSmith's Crucible</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #0a0a23; color: #e0e7ff; margin: 0; padding: 16px; }
+    .container { max-width: 672px; margin: 0 auto; background: #1e1e3f; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    h1 { font-size: 2rem; font-weight: bold; text-align: center; color: #7f00ff; margin-bottom: 24px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .tab-btn { flex: 1; padding: 8px; background: #2e2e5f; color: #e0e7ff; border: 1px solid #4b4b8c; border-radius: 4px; cursor: pointer; transition: background 0.3s; }
+    .tab-btn.active { background: #7f00ff; }
+    .tab-btn:hover { background: #5b21b6; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: slideIn 0.5s ease-in-out; }
+    .progress-bar { background: #4b4b8c; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { background: #7f00ff; height: 100%; transition: width 0.5s ease-in-out; }
+    .input-group { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .input-group input, .input-group select, .input-group button { padding: 8px; border: 1px solid #4b4b8c; border-radius: 4px; background: #2e2e5f; color: #e0e7ff; }
+    .input-group input[type="datetime-local"] { width: 180px; }
+    .input-group input { flex: 1; }
+    .input-group button { background: #7f00ff; cursor: pointer; }
+    .input-group button:hover { background: #5b21b6; }
+    .starcore { padding: 16px; border: 1px solid; border-radius: 4px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.5s; }
+    .starcore.cosmic { border-color: #7f00ff; background: #2e1065; }
+    .starcore.supernova { border-color: #a855f7; background: #3b0764; }
+    .starcore.nova { border-color: #d8b4fe; background: #4c1d95; }
+    .starcore.flame { border-color: #22d3ee; background: #083344; }
+    .starcore.ember { border-color: #38bdf8; background: #0c4a6e; }
+    .starcore.spark { border-color: #7dd3fc; background: #1e4b7a; }
+    .starcore-actions button { margin-left: 8px; padding: 4px 12px; border-radius: 4px; color: #e0e7ff; }
+    .starcore-actions button.edit { background: #d97706; }
+    .starcore-actions button.edit:hover { background: #b45309; }
+    .starcore-actions button.complete { background: #16a34a; }
+    .starcore-actions button.complete:hover { background: #15803d; }
+    .no-starcores { text-align: center; color: #9ca3af; }
+    .notification { margin-bottom: 16px; padding: 8px; background: #16a34a; color: #e0e7ff; text-align: center; border-radius: 4px; animation: fadeIn 0.5s; }
+    .vault-item { margin-bottom: 8px; }
+    .vault-item button { background: #7f00ff; padding: 4px 12px; border-radius: 4px; color: #e0e7ff; }
+    .vault-item button:hover { background: #5b21b6; }
+    .vault-item button:disabled { background: #4b4b8c; cursor: not-allowed; }
+    .surge-active { color: #ff4500; font-weight: bold; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>StarSmith's Crucible</h1>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('tasks')">Tasks</button>
+      <button class="tab-btn" onclick="showTab('stats')">Stats</button>
+      <button class="tab-btn" onclick="showTab('vault')">Vault</button>
+    </div>
+    <div id="notification" class="notification hidden"></div>
+    <div id="tasks" class="tab-content active">
+      <div class="input-group">
+        <input id="starcoreInput" type="text" placeholder="Craft StarCore (e.g., Study for exam)">
+        <select id="starcoreTier">
+          <option value="Spark">Spark</option>
+          <option value="Ember">Ember</option>
+          <option value="Flame">Flame</option>
+          <option value="Nova">Nova</option>
+          <option value="Supernova">Supernova</option>
+          <option value="Cosmic">Cosmic</option>
+        </select>
+        <input id="starcoreTime" type="datetime-local">
+        <button onclick="forgeStarCore()">Craft</button>
+      </div>
+      <h2 class="text-lg font-bold mb-2">Daily Quests</h2>
+      <ul id="dailyList"></ul>
+      <h2 class="text-lg font-bold mb-2 mt-4">Your StarCores</h2>
+      <ul id="starcoreList"></ul>
+    </div>
+    <div id="stats" class="tab-content">
+      <div class="text-center mb-4">
+        <span class="text-lg font-semibold">StarSmith Level: <span id="smithLevel">1</span></span>
+        <span class="ml-4 text-lg font-semibold">Stardust: <span id="smithStardust">0</span>/100</span>
+        <span class="ml-4 text-lg font-semibold">Orbs: <span id="smithOrbs">0</span></span>
+        <span class="ml-4 text-lg font-semibold" id="surgeStatus"></span>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="mt-4">
+          <span class="text-sm">Strength: <span id="smithStrength">0</span> (Improves success chance)</span><br>
+          <span class="text-sm">Defense: <span id="smithDefense">0</span> (Reduces failure penalties)</span><br>
+          <span class="text-sm">Agility: <span id="smithAgility">0</span> (Shortens time limits)</span><br>
+          <span class="text-sm">Intellect: <span id="smithIntellect">0</span> (Boosts complex task rewards)</span>
+        </div>
+      </div>
+      <h2 class="text-xl font-bold mb-2">Crafting History</h2>
+      <ul id="historyList" class="text-sm"></ul>
+    </div>
+    <div id="vault" class="tab-content">
+      <h2 class="text-xl font-bold mb-2">Stellar Vault</h2>
+      <p class="text-sm mb-2">Nebula Crest: +10 Strength (better success chance)<br>Cosmic Pulse: +10 Intellect (reduces time limits)<br>Crucible Surge: Double Stardust for 5 mins</p>
+      <div id="rewardVault">
+        <div class="vault-item">Nebula Crest (50 Orbs): <button onclick="buyReward('Nebula Crest', 50)">Buy</button></div>
+        <div class="vault-item">Cosmic Pulse (100 Orbs): <button onclick="buyReward('Cosmic Pulse', 100)">Buy</button></div>
+        <div class="vault-item">Crucible Surge (30 Orbs): <button onclick="activateSurge()">Activate</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let starcores = JSON.parse(localStorage.getItem('starcores')) || [];
+    let smith = JSON.parse(localStorage.getItem('starSmith')) || {
+      level: 1,
+      stardust: 0,
+      orbs: 0,
+      strength: 0,
+      defense: 0,
+      agility: 0,
+      intellect: 0,
+      rewards: [],
+      history: [],
+      surge: { active: false, endTime: 0 }
+    };
+    const dailyQuestPool = [
+      { id: 'daily1', title: 'Play Games for 30 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily2', title: 'Walk Outside for 30 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily3', title: 'Meditate Under Stars for 15 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily4', title: 'Read Cosmic Lore for 20 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily5', title: 'Sketch a Nebula for 15 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily6', title: 'Organize StarCharts for 10 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily7', title: 'Practice a Skill for 20 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 },
+      { id: 'daily8', title: 'Connect with a Friend for 15 Mins', tier: 'Ember', timeLimit: 24 * 60 * 60 * 1000 }
+    ];
+    let activeDailyQuests = JSON.parse(localStorage.getItem('activeDailyQuests')) || [];
+    let lastReset = JSON.parse(localStorage.getItem('lastReset')) || Date.now();
+    const stardustPerLevel = 100;
+    const tierStardust = { Cosmic: 50, Supernova: 40, Nova: 30, Flame: 20, Ember: 10, Spark: 5 };
+    const tierOrbs = { Cosmic: 30, Supernova: 25, Nova: 20, Flame: 15, Ember: 10, Spark: 5 };
+    const tierSuccessChance = { Cosmic: 0.7, Supernova: 0.8, Nova: 0.85, Flame: 0.9, Ember: 0.95, Spark: 1.0 };
+    const tierStatBoost = {
+      Cosmic: { strength: 5, defense: 3, agility: 2, intellect: 5 },
+      Supernova: { strength: 4, defense: 2, agility: 2, intellect: 4 },
+      Nova: { strength: 3, defense: 2, agility: 1, intellect: 3 },
+      Flame: { strength: 2, defense: 1, agility: 1, intellect: 2 },
+      Ember: { strength: 1, defense: 1, agility: 1, intellect: 1 },
+      Spark: { strength: 1, defense: 0, agility: 0, intellect: 1 }
+    };
+    let surgeTimeout = null;
+
+    function saveState() {
+      localStorage.setItem('starcores', JSON.stringify(starcores));
+      localStorage.setItem('starSmith', JSON.stringify(smith));
+      localStorage.setItem('activeDailyQuests', JSON.stringify(activeDailyQuests));
+      localStorage.setItem('lastReset', JSON.stringify(lastReset));
+    }
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.classList.remove('hidden');
+      setTimeout(() => notification.classList.add('hidden'), 3000);
+    }
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelector(`button[onclick="showTab('${tabId}')"]`).classList.add('active');
+    }
+
+    function resetDailyQuests() {
+      const now = Date.now();
+      const today = new Date(now).setHours(0, 0, 0, 0);
+      const lastResetDate = new Date(lastReset).setHours(0, 0, 0, 0);
+      if (today > lastResetDate) {
+        starcores = starcores.filter(s => !dailyQuestPool.some(d => d.id === s.id));
+        activeDailyQuests = [];
+        const shuffled = dailyQuestPool.sort(() => Math.random() - 0.5).slice(0, 3);
+        activeDailyQuests = shuffled.map(quest => ({ ...quest }));
+        lastReset = now;
+        saveState();
+        renderDailyQuests();
+        renderStarCores();
+      }
+    }
+
+    function forgeStarCore(isDaily = false, dailyQuest = null) {
+      const title = isDaily ? dailyQuest.title : document.getElementById('starcoreInput').value.trim();
+      const tier = isDaily ? dailyQuest.tier : document.getElementById('starcoreTier').value;
+      const timeInput = isDaily ? null : document.getElementById('starcoreTime').value;
+      const time = isDaily ? Date.now() : timeInput ? new Date(timeInput).getTime() : null;
+      const timeLimit = isDaily ? dailyQuest.timeLimit : (time ? 24 * 60 * 60 * 1000 : null);
+      if (!title) {
+        showNotification('StarCore name cannot be empty!');
+        return;
+      }
+      const starcore = {
+        id: isDaily ? dailyQuest.id : Date.now(),
+        title,
+        tier,
+        time,
+        timeLimit
+      };
+      starcores.push(starcore);
+      starcores.sort((a, b) => {
+        const tierOrder = { Cosmic: 1, Supernova: 2, Nova: 3, Flame: 4, Ember: 5, Spark: 6 };
+        return tierOrder[a.tier] - tierOrder[b.tier];
+      });
+      if (!isDaily) {
+        document.getElementById('starcoreInput').value = '';
+        document.getElementById('starcoreTier').value = 'Spark';
+        document.getElementById('starcoreTime').value = '';
+      }
+      saveState();
+      renderStarCores();
+      showNotification('StarCore crafted in the Crucible!');
+    }
+
+    function completeStarCore(id) {
+      const starcore = starcores.find(s => s.id === id);
+      if (!starcore) return;
+      if (starcore.timeLimit && Date.now() > (starcore.time || Date.now()) + starcore.timeLimit) {
+        starcores = starcores.filter(s => s.id !== id);
+        saveState();
+        renderStarCores();
+        showNotification('StarCore expired!');
+        return;
+      }
+      const isDaily = dailyQuestPool.some(d => d.id === id);
+      const successChance = tierSuccessChance[starcore.tier] + (smith.strength / 100);
+      const success = Math.random() < Math.min(successChance, 1.0);
+      const stardustBase = isDaily ? tierStardust[starcore.tier] * 1.5 : tierStardust[starcore.tier];
+      const orbBase = isDaily ? tierOrbs[starcore.tier] * 1.5 : tierOrbs[starcore.tier];
+      const stardustGain = success ? stardustBase : Math.floor(stardustBase / (1 + smith.defense / 100));
+      const orbGain = success ? orbBase : Math.floor(orbBase / (1 + smith.defense / 100));
+      const multiplier = smith.surge.active ? 2 : 1;
+      smith.stardust += stardustGain * multiplier;
+      smith.orbs += orbGain;
+      const statBoost = tierStatBoost[starcore.tier];
+      smith.strength += statBoost.strength;
+      smith.defense += statBoost.defense;
+      smith.agility += statBoost.agility;
+      smith.intellect += statBoost.intellect * (1 + smith.intellect / 100);
+      smith.history.unshift({
+        title: starcore.title,
+        tier: starcore.tier,
+        success,
+        stardust: stardustGain * multiplier,
+        orbs: orbGain,
+        timestamp: new Date().toLocaleString()
+      });
+      while (smith.stardust >= stardustPerLevel) {
+        smith.stardust -= stardustPerLevel;
+        smith.level += 1;
+        showNotification(`Ascended! You are now Level ${smith.level} StarSmith!`);
+      }
+      starcores = starcores.filter(s => s.id !== id);
+      saveState();
+      renderStarCores();
+      renderHistory();
+      updateSmith();
+      showNotification(success
+        ? `StarCore forged! +${stardustGain * multiplier} Stardust, +${orbGain} Orbs`
+        : `Forge flickered! +${stardustGain * multiplier} Stardust, +${orbGain} Orbs`);
+    }
+
+    function editStarCore(id) {
+      const starcore = starcores.find(s => s.id === id);
+      const newTitle = prompt('Edit StarCore:', starcore.title);
+      if (newTitle && newTitle.trim()) {
+        const newTier = prompt('Enter tier (Cosmic, Supernova, Nova, Flame, Ember, Spark):', starcore.tier);
+        const newTime = prompt('Enter due date/time (YYYY-MM-DD HH:MM) or leave blank:', starcore.time ? new Date(starcore.time).toLocaleString() : '');
+        if (['Cosmic', 'Supernova', 'Nova', 'Flame', 'Ember', 'Spark'].includes(newTier)) {
+          starcore.title = newTitle.trim();
+          starcore.tier = newTier;
+          starcore.time = newTime ? new Date(newTime).getTime() : null;
+          starcore.timeLimit = starcore.time ? 24 * 60 * 60 * 1000 : null;
+          starcores.sort((a, b) => {
+            const tierOrder = { Cosmic: 1, Supernova: 2, Nova: 3, Flame: 4, Ember: 5, Spark: 6 };
+            return tierOrder[a.tier] - tierOrder[b.tier];
+          });
+          saveState();
+          renderStarCores();
+          showNotification('StarCore reforged successfully!');
+        } else {
+          showNotification('Invalid tier! Use Cosmic, Supernova, Nova, Flame, Ember, or Spark.');
+        }
+      }
+    }
+
+    function buyReward(name, cost) {
+      if (smith.orbs >= cost) {
+        smith.orbs -= cost;
+        smith.rewards.push(name);
+        if (name === 'Nebula Crest') smith.strength += 10;
+        if (name === 'Cosmic Pulse') smith.intellect += 10;
+        saveState();
+        updateSmith();
+        renderVault();
+        showNotification(`Acquired ${name} from the Stellar Vault!`);
+      } else {
+        showNotification('Not enough Orbs!');
+      }
+    }
+
+    function activateSurge() {
+      if (smith.orbs >= 30 && !smith.surge.active) {
+        smith.orbs -= 30;
+        smith.surge.active = true;
+        smith.surge.endTime = Date.now() + 5 * 60 * 1000;
+        updateSurge();
+        saveState();
+        updateSmith();
+        renderVault();
+        showNotification('Crucible Surge activated! Double Stardust for 5 minutes!');
+        surgeTimeout = setTimeout(() => {
+          smith.surge.active = false;
+          smith.surge.endTime = 0;
+          saveState();
+          updateSurge();
+          renderVault();
+          showNotification('Crucible Surge ended.');
+        }, 5 * 60 * 1000);
+      } else if (smith.surge.active) {
+        showNotification('Crucible Surge already active!');
+      } else {
+        showNotification('Not enough Orbs!');
+      }
+    }
+
+    function updateSurge() {
+      const status = document.getElementById('surgeStatus');
+      if (smith.surge.active) {
+        const timeLeft = Math.ceil((smith.surge.endTime - Date.now()) / 1000);
+        status.textContent = `Surge: ${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}`;
+        status.classList.add('surge-active');
+        setTimeout(updateSurge, 1000);
+      } else {
+        status.textContent = '';
+        status.classList.remove('surge-active');
+      }
+    }
+
+    function renderDailyQuests() {
+      const dailyList = document.getElementById('dailyList');
+      dailyList.innerHTML = activeDailyQuests.length === 0
+        ? '<li class="no-starcores">No daily quests available.</li>'
+        : activeDailyQuests.map(quest => {
+            const exists = starcores.some(s => s.id === quest.id);
+            return `
+              <li class="starcore ${quest.tier.toLowerCase()}">
+                <div>
+                  <span>${quest.title}</span>
+                  <span style="display: block; font-size: 0.875rem; color: #9ca3af;">Tier: ${quest.tier} (+${Math.floor(tierStardust[quest.tier] * 1.5)} Stardust, +${Math.floor(tierOrbs[quest.tier] * 1.5)} Orbs, ${Math.round(tierSuccessChance[quest.tier] * 100)}% Success)</span>
+                </div>
+                <div class="starcore-actions">
+                  ${exists ? `<button class="complete" onclick="completeStarCore('${quest.id}')">Complete</button>` : `<button onclick="forgeStarCore(true, ${JSON.stringify(quest)})">Accept</button>`}
+                </div>
+              </li>
+            `;
+          }).join('');
+    }
+
+    function renderStarCores() {
+      resetDailyQuests();
+      const starcoreList = document.getElementById('starcoreList');
+      starcoreList.innerHTML = starcores.length === 0
+        ? '<li class="no-starcores">No StarCores yet. Begin crafting!</li>'
+        : starcores.filter(s => !dailyQuestPool.some(d => d.id === s.id)).map(starcore => {
+            const due = starcore.time ? new Date(starcore.time).toLocaleString() : 'No due date';
+            return `
+              <li class="starcore ${starcore.tier.toLowerCase()}">
+                <div>
+                  <span>${starcore.title}</span>
+                  <span style="display: block; font-size: 0.875rem; color: #9ca3af;">Tier: ${starcore.tier} (+${tierStardust[starcore.tier]} Stardust, +${tierOrbs[starcore.tier]} Orbs, ${Math.round((tierSuccessChance[starcore.tier] + smith.strength / 100) * 100)}% Success)</span>
+                  <span style="display: block; font-size: 0.875rem; color: #9ca3af;">Due: ${due}</span>
+                </div>
+                <div class="starcore-actions">
+                  <button class="edit" onclick="editStarCore(${starcore.id})">Edit</button>
+                  <button class="complete" onclick="completeStarCore(${starcore.id})">Complete</button>
+                </div>
+              </li>
+            `;
+          }).join('');
+      renderDailyQuests();
+    }
+
+    function renderHistory() {
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = smith.history.length === 0
+        ? '<li class="no-starcores">No crafting history yet.</li>'
+        : smith.history.slice(0, 10).map(entry => `
+          <li class="mb-2" style="animation: fadeIn 0.5s;">
+            ${entry.timestamp}: ${entry.success ? 'Forged' : 'Failed'} "${entry.title}" (${entry.tier}) - +${entry.stardust} Stardust, +${entry.orbs} Orbs
+          </li>
+        `).join('');
+    }
+
+    function renderVault() {
+      const vault = document.getElementById('rewardVault');
+      vault.innerHTML = `
+        <div class="vault-item">Nebula Crest (50 Orbs): <button ${smith.orbs < 50 ? 'disabled' : ''} onclick="buyReward('Nebula Crest', 50)">Buy</button></div>
+        <div class="vault-item">Cosmic Pulse (100 Orbs): <button ${smith.orbs < 100 ? 'disabled' : ''} onclick="buyReward('Cosmic Pulse', 100)">Buy</button></div>
+        <div class="vault-item">Crucible Surge (30 Orbs): <button ${smith.orbs < 30 || smith.surge.active ? 'disabled' : ''} onclick="activateSurge()">Activate</button></div>
+      `;
+    }
+
+    function updateSmith() {
+      document.getElementById('smithLevel').textContent = smith.level;
+      document.getElementById('smithStardust').textContent = `${smith.stardust}/${stardustPerLevel}`;
+      document.getElementById('smithOrbs').textContent = smith.orbs;
+      document.getElementById('smithStrength').textContent = smith.strength;
+      document.getElementById('smithDefense').textContent = smith.defense;
+      document.getElementById('smithAgility').textContent = smith.agility;
+      document.getElementById('smithIntellect').textContent = Math.floor(smith.intellect);
+      document.getElementById('progressFill').style.width = `${(smith.stardust / stardustPerLevel) * 100}%`;
+    }
+
+    resetDailyQuests();
+    renderStarCores();
+    renderHistory();
+    renderVault();
+    updateSmith();
+    if (smith.surge.active && smith.surge.endTime > Date.now()) {
+      updateSurge();
+    }
+  </script>
+</body>
+</html>
