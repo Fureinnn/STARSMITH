@@ -48,87 +48,15 @@ body {
     background: var(--background);
 }
 
-/* Sidebar */
+/* Sidebar - Hidden on desktop, mobile menu */
 .sidebar {
-    width: 280px;
-    background: var(--white);
-    border-left: 1px solid var(--gray-200);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    right: 0;
-    top: 0;
-    height: 100vh;
-    z-index: 100;
-    box-shadow: 0 0 20px rgba(127, 0, 255, 0.1);
-    transition: transform 0.3s ease;
+    display: none;
 }
 
-.sidebar-header {
-    padding: 24px;
-    border-bottom: 1px solid var(--gray-200);
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-}
-
-.sidebar-header .app-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0;
-}
-
-.sidebar-header .app-title i {
-    color: var(--white);
-    font-size: 1.5rem;
-    animation: star-pulse 3s ease-in-out infinite;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-@keyframes star-pulse {
-    0%, 100% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.05) rotate(180deg); }
-}
-
+/* Hidden sidebar components for mobile */
+.sidebar-header,
 .sidebar-nav {
-    flex: 1;
-    padding: 16px 0;
-}
-
-.nav-item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 24px;
-    background: none;
-    border: none;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.nav-item:hover {
-    background: var(--gray-100);
-    color: var(--primary);
-}
-
-.nav-item.active {
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    color: var(--white);
-    box-shadow: 0 0 15px rgba(127, 0, 255, 0.3);
-}
-
-.nav-item i {
-    font-size: 1.1rem;
-    width: 20px;
-    text-align: center;
+    display: none;
 }
 
 /* Floating Header */
@@ -136,8 +64,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    right: 280px;
-    height: 60px;
+    right: 0;
+    height: 70px;
     background: rgba(30, 30, 63, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--gray-200);
@@ -145,8 +73,14 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 24px;
-    z-index: 50;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.floating-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 
 .floating-header .header-title {
@@ -161,6 +95,45 @@ body {
 .floating-header .header-title i {
     color: var(--primary);
     animation: star-pulse 3s ease-in-out infinite;
+}
+
+.floating-header .header-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.floating-header .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.floating-header .nav-item:hover {
+    background: var(--gray-100);
+    color: var(--primary);
+}
+
+.floating-header .nav-item.active {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    color: var(--white);
+    box-shadow: 0 0 10px rgba(127, 0, 255, 0.3);
+}
+
+.floating-header .nav-item i {
+    font-size: 0.9rem;
+    width: 16px;
+    text-align: center;
 }
 
 .floating-header .header-stats {
@@ -191,8 +164,8 @@ body {
 /* Main Container */
 .main-container {
     flex: 1;
-    margin-right: 280px;
-    padding: 84px 24px 24px 24px;
+    margin-right: 0;
+    padding: 94px 24px 24px 24px;
     min-height: 100vh;
     overflow-y: auto;
 }
@@ -1382,22 +1355,77 @@ body::before {
     }
 }
 
+/* Mobile Navigation */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(30, 30, 63, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-200);
+    z-index: 99;
+    padding: 16px;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-nav.active {
+    transform: translateY(0);
+}
+
+.mobile-nav .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.mobile-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: var(--gray-100);
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.mobile-nav .nav-item:hover {
+    background: var(--gray-200);
+    color: var(--primary);
+}
+
+.mobile-nav .nav-item.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: var(--white);
+    box-shadow: 0 0 10px rgba(127, 0, 255, 0.3);
+}
+
+.mobile-nav .nav-item i {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .sidebar {
-        transform: translateX(100%);
-    }
-    
-    .sidebar.active {
-        transform: translateX(0);
-    }
-    
-    .main-container {
-        margin-right: 0;
-        padding-top: 84px;
+    .floating-header .header-nav {
+        display: none;
     }
     
     .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .mobile-nav {
         display: block;
     }
     
@@ -1408,24 +1436,44 @@ body::before {
 
 @media (max-width: 768px) {
     .main-container {
-        padding: 84px 16px 16px 16px;
+        padding: 94px 16px 16px 16px;
     }
     
     .floating-header {
-        right: 0;
         padding: 0 16px;
+        height: 60px;
     }
     
     .floating-header .header-stats {
-        gap: 12px;
+        gap: 8px;
     }
     
     .floating-header .header-stat {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+    }
+    
+    .floating-header .header-stat span {
+        display: none;
+    }
+    
+    .floating-header .header-stat .header-stat-value {
+        display: inline;
     }
     
     .floating-header .header-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .floating-header .header-title span {
+        display: none;
+    }
+    
+    .mobile-nav {
+        top: 60px;
+    }
+    
+    .main-container {
+        padding: 84px 16px 16px 16px;
     }
     
     .dashboard-header {

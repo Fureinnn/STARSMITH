@@ -84,7 +84,7 @@ class QuestMasterApp {
     }
 
     initializeUI() {
-        // Sidebar navigation
+        // Header navigation (both desktop and mobile)
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 const tabId = item.dataset.tab;
@@ -94,20 +94,22 @@ class QuestMasterApp {
 
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobile-menu-toggle');
-        const sidebar = document.querySelector('.sidebar');
-        mobileToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
+        const mobileNav = document.getElementById('mobile-nav');
+        if (mobileToggle && mobileNav) {
+            mobileToggle.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+            });
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024 && 
-                !sidebar.contains(e.target) && 
-                !mobileToggle.contains(e.target) &&
-                sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
-        });
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 1024 && 
+                    !mobileNav.contains(e.target) && 
+                    !mobileToggle.contains(e.target) &&
+                    mobileNav.classList.contains('active')) {
+                    mobileNav.classList.remove('active');
+                }
+            });
+        }
 
         // Add task buttons
         document.getElementById('add-habit-btn').addEventListener('click', () => this.openTaskModal('habits'));
@@ -128,18 +130,20 @@ class QuestMasterApp {
     }
 
     switchTab(tabId) {
-        // Update active nav item
+        // Update active nav item (both header and mobile nav)
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         
-        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        // Set active for both header and mobile nav
+        document.querySelectorAll(`[data-tab="${tabId}"]`).forEach(item => item.classList.add('active'));
         document.getElementById(`${tabId}-tab`).classList.add('active');
         
         this.currentTab = tabId;
 
         // Close mobile menu when switching tabs
-        if (window.innerWidth <= 1024) {
-            document.querySelector('.sidebar').classList.remove('active');
+        const mobileNav = document.getElementById('mobile-nav');
+        if (mobileNav && window.innerWidth <= 1024) {
+            mobileNav.classList.remove('active');
         }
 
         // Update specific tabs
