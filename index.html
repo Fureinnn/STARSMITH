@@ -49,23 +49,28 @@
                 </button>
             </nav>
         </div>
-        <div class="header-stats">
-            <div class="header-stat">
-                <i class="fas fa-level-up-alt"></i>
-                <span>Lvl <span class="header-stat-value" id="header-level">1</span></span>
+        <div class="header-right">
+            <div class="header-stats">
+                <div class="header-stat">
+                    <i class="fas fa-level-up-alt"></i>
+                    <span>Lvl <span class="header-stat-value" id="header-level">1</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-sparkles"></i>
+                    <span><span class="header-stat-value" id="header-stardust">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-coins"></i>
+                    <span><span class="header-stat-value" id="header-orbs">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-fire"></i>
+                    <span><span class="header-stat-value" id="header-streak">0</span></span>
+                </div>
             </div>
-            <div class="header-stat">
-                <i class="fas fa-sparkles"></i>
-                <span><span class="header-stat-value" id="header-stardust">0</span></span>
-            </div>
-            <div class="header-stat">
-                <i class="fas fa-coins"></i>
-                <span><span class="header-stat-value" id="header-orbs">0</span></span>
-            </div>
-            <div class="header-stat">
-                <i class="fas fa-fire"></i>
-                <span><span class="header-stat-value" id="header-streak">0</span></span>
-            </div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
     
@@ -385,10 +390,6 @@
         </main>
     </div>
 
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
 
     <!-- Task Modal -->
     <div class="modal-overlay" id="task-modal">
