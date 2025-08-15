@@ -1,7 +1,7 @@
 // Main Application Class
 class QuestMasterApp {
     constructor() {
-        this.currentTab = 'habits';
+        this.currentTab = 'dashboard';
         this.currentEditingTask = null;
         this.currentTaskType = null;
 
@@ -10,6 +10,7 @@ class QuestMasterApp {
         this.habits = this.loadTasks('habits');
         this.dailies = this.loadTasks('dailies');
         this.todos = this.loadTasks('todos');
+        this.vault = this.loadVaultData();
 
         // Initialize achievement manager
         this.achievementManager = new AchievementManager();
@@ -53,6 +54,15 @@ class QuestMasterApp {
         return saved ? JSON.parse(saved) : [];
     }
 
+    loadVaultData() {
+        const defaultVault = {
+            artifacts: [],
+            boosters: []
+        };
+        const saved = localStorage.getItem('questmaster_vault');
+        return saved ? { ...defaultVault, ...JSON.parse(saved) } : defaultVault;
+    }
+
     savePlayerData() {
         localStorage.setItem('questmaster_player', JSON.stringify(this.player));
     }
@@ -66,15 +76,37 @@ class QuestMasterApp {
         this.saveTasks('habits');
         this.saveTasks('dailies');
         this.saveTasks('todos');
+        this.saveVaultData();
+    }
+
+    saveVaultData() {
+        localStorage.setItem('questmaster_vault', JSON.stringify(this.vault));
     }
 
     initializeUI() {
-        // Tab navigation
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.dataset.tab;
+        // Sidebar navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const tabId = item.dataset.tab;
                 this.switchTab(tabId);
             });
+        });
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobile-menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !mobileToggle.contains(e.target) &&
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
         });
 
         // Add task buttons
@@ -96,8 +128,8 @@ class QuestMasterApp {
     }
 
     switchTab(tabId) {
-        // Update active tab
-        document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+        // Update active nav item
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         
         document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
@@ -105,14 +137,20 @@ class QuestMasterApp {
         
         this.currentTab = tabId;
 
-        // Update achievements when viewing achievements tab
-        if (tabId === 'achievements') {
-            this.achievementManager.renderAchievements();
+        // Close mobile menu when switching tabs
+        if (window.innerWidth <= 1024) {
+            document.querySelector('.sidebar').classList.remove('active');
         }
 
-        // Update stats when viewing stats tab
-        if (tabId === 'stats') {
-            this.updateStatsTab();
+        // Update specific tabs
+        if (tabId === 'dashboard') {
+            this.updateDashboard();
+        } else if (tabId === 'character') {
+            this.updateCharacterTab();
+        } else if (tabId === 'vault') {
+            this.updateVaultTab();
+        } else if (tabId === 'achievements') {
+            this.achievementManager.renderAchievements();
         }
     }
 
@@ -416,20 +454,37 @@ class QuestMasterApp {
     updateUI() {
         this.updatePlayerStats();
         this.renderTasks();
+        if (this.currentTab === 'dashboard') {
+            this.updateDashboard();
+        } else if (this.currentTab === 'character') {
+            this.updateCharacterTab();
+        } else if (this.currentTab === 'vault') {
+            this.updateVaultTab();
+        }
     }
 
     updatePlayerStats() {
-        document.getElementById('player-level').textContent = this.player.level;
-        document.getElementById('player-xp').textContent = this.player.totalXP;
-        document.getElementById('player-gold').textContent = this.player.gold;
-        document.getElementById('player-streak').textContent = this.player.currentStreak;
+        // Update dashboard stats
+        const levelDash = document.getElementById('player-level-dash');
+        const xpDash = document.getElementById('player-xp-dash');
+        const goldDash = document.getElementById('player-gold-dash');
+        const streakDash = document.getElementById('player-streak-dash');
+        const xpFillDash = document.getElementById('xp-fill-dash');
+        const xpTextDash = document.getElementById('xp-text-dash');
 
-        // Update XP bar
-        const xpNeeded = this.getXPNeededForLevel(this.player.level);
-        const xpPercentage = (this.player.xp / xpNeeded) * 100;
-        
-        document.getElementById('xp-fill').style.width = `${xpPercentage}%`;
-        document.getElementById('xp-text').textContent = `${this.player.xp} / ${xpNeeded} Stardust`;
+        if (levelDash) {
+            levelDash.textContent = this.player.level;
+            xpDash.textContent = this.player.totalXP;
+            goldDash.textContent = this.player.gold;
+            streakDash.textContent = this.player.currentStreak;
+
+            // Update XP bar
+            const xpNeeded = this.getXPNeededForLevel(this.player.level);
+            const xpPercentage = (this.player.xp / xpNeeded) * 100;
+            
+            xpFillDash.style.width = `${xpPercentage}%`;
+            xpTextDash.textContent = `${this.player.xp} / ${xpNeeded} Stardust`;
+        }
     }
 
     renderTasks() {
@@ -515,18 +570,78 @@ class QuestMasterApp {
         return card;
     }
 
-    updateStatsTab() {
-        // Update stats display
-        document.getElementById('tasks-today').textContent = this.player.stats.tasksCompletedToday;
-        document.getElementById('tasks-week').textContent = this.player.stats.tasksCompletedWeek;
-        document.getElementById('tasks-total').textContent = this.player.stats.totalCompleted;
-        document.getElementById('current-streak').textContent = `${this.player.currentStreak} cycles`;
-        document.getElementById('best-streak').textContent = `${this.player.bestStreak} cycles`;
+    updateDashboard() {
+        // Update overview stats
+        document.getElementById('daily-count-dash').textContent = this.dailies.length;
+        document.getElementById('daily-completed-dash').textContent = this.player.stats.dailiesCompletedToday;
+        document.getElementById('tasks-count-dash').textContent = this.todos.length;
+        document.getElementById('tasks-completed-dash').textContent = this.player.stats.tasksCompletedToday;
+        document.getElementById('starcores-count-dash').textContent = this.habits.length;
+        document.getElementById('starcores-completed-dash').textContent = this.getHabitsCompletedToday();
         
-        document.getElementById('active-habits').textContent = this.habits.length;
-        document.getElementById('active-dailies').textContent = this.dailies.length;
-        document.getElementById('active-todos').textContent = this.todos.length;
-        document.getElementById('achievements-unlocked').textContent = this.achievementManager.getUnlockedCount();
+        // Observatory stats
+        document.getElementById('tasks-total-dash').textContent = this.player.stats.totalCompleted;
+        document.getElementById('current-streak-dash').textContent = `${this.player.currentStreak} cycles`;
+        document.getElementById('best-streak-dash').textContent = `${this.player.bestStreak} cycles`;
+        document.getElementById('achievements-unlocked-dash').textContent = this.achievementManager.getUnlockedCount();
+    }
+
+    updateCharacterTab() {
+        document.getElementById('player-level-char').textContent = this.player.level;
+        document.getElementById('total-stardust-char').textContent = this.player.totalXP;
+        document.getElementById('total-orbs-char').textContent = this.player.gold;
+        document.getElementById('current-level-char').textContent = this.player.level;
+        document.getElementById('tasks-completed-char').textContent = this.player.stats.totalCompleted;
+        document.getElementById('best-streak-char').textContent = `${this.player.bestStreak} cycles`;
+        document.getElementById('codex-entries-char').textContent = this.achievementManager.getUnlockedCount();
+        
+        // Update character XP bar
+        const xpNeeded = this.getXPNeededForLevel(this.player.level);
+        const xpPercentage = (this.player.xp / xpNeeded) * 100;
+        document.getElementById('xp-fill-char').style.width = `${xpPercentage}%`;
+        document.getElementById('xp-text-char').textContent = `${this.player.xp} / ${xpNeeded} Stardust`;
+    }
+
+    updateVaultTab() {
+        document.getElementById('vault-orbs').textContent = this.player.gold;
+        document.getElementById('vault-stardust').textContent = this.player.totalXP;
+    }
+
+    getHabitsCompletedToday() {
+        const today = new Date().toDateString();
+        return this.habits.filter(habit => {
+            const lastCompleted = habit.lastCompleted ? new Date(habit.lastCompleted).toDateString() : null;
+            return lastCompleted === today;
+        }).length;
+    }
+
+    purchaseArtifact(type) {
+        const costs = {
+            booster: 100,
+            shield: 150,
+            nova: 200
+        };
+        
+        const cost = costs[type];
+        if (this.player.gold >= cost) {
+            this.player.gold -= cost;
+            this.vault.artifacts.push({
+                type: type,
+                purchasedAt: Date.now()
+            });
+            this.saveAllData();
+            this.updateUI();
+            
+            const artifactNames = {
+                booster: 'Stellar Booster',
+                shield: 'Cosmic Shield',
+                nova: 'Nova Fragment'
+            };
+            
+            alert(`✨ Acquired ${artifactNames[type]}! It has been added to your vault.`);
+        } else {
+            alert(`❌ Insufficient Cosmic Orbs! You need ${cost} orbs to acquire this artifact.`);
+        }
     }
 }
 

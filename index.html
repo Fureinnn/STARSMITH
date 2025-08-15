@@ -12,68 +12,217 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
+        <!-- Sidebar Menu -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
                 <h1 class="app-title">
                     <i class="fas fa-star"></i>
-                    StarSmith's Crucible
+                    <span>StarSmith's Crucible</span>
                 </h1>
-                <div class="player-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Level</span>
-                        <span class="stat-value" id="player-level">1</span>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="character">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Character</span>
+                </button>
+                <button class="nav-item" data-tab="habits">
+                    <i class="fas fa-flame"></i>
+                    <span>StarCores</span>
+                </button>
+                <button class="nav-item" data-tab="dailies">
+                    <i class="fas fa-sun"></i>
+                    <span>Daily Quests</span>
+                </button>
+                <button class="nav-item" data-tab="todos">
+                    <i class="fas fa-scroll"></i>
+                    <span>Cosmic Tasks</span>
+                </button>
+                <button class="nav-item" data-tab="vault">
+                    <i class="fas fa-gem"></i>
+                    <span>Vault</span>
+                </button>
+                <button class="nav-item" data-tab="achievements">
+                    <i class="fas fa-trophy"></i>
+                    <span>Codex</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-container">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard-tab">
+                <div class="dashboard-header">
+                    <h2>Stellar Command Center</h2>
+                    <div class="player-stats-compact">
+                        <div class="stat-item">
+                            <span class="stat-label">Level</span>
+                            <span class="stat-value" id="player-level-dash">1</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Stardust</span>
+                            <span class="stat-value" id="player-xp-dash">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Orbs</span>
+                            <span class="stat-value" id="player-gold-dash">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Streak</span>
+                            <span class="stat-value" id="player-streak-dash">0</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Stardust</span>
-                        <span class="stat-value" id="player-xp">0</span>
+                </div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar">
+                        <div class="xp-fill" id="xp-fill-dash"></div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Orbs</span>
-                        <span class="stat-value" id="player-gold">0</span>
+                    <span class="xp-text" id="xp-text-dash">0 / 100 Stardust</span>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <!-- Daily Challenges Overview -->
+                    <div class="dashboard-card daily-overview">
+                        <h3><i class="fas fa-sun"></i> Today's Challenges</h3>
+                        <div id="daily-overview-content">
+                            <div class="overview-stat">
+                                <span>Active Quests</span>
+                                <span id="daily-count-dash">0</span>
+                            </div>
+                            <div class="overview-stat">
+                                <span>Completed Today</span>
+                                <span id="daily-completed-dash">0</span>
+                            </div>
+                        </div>
+                        <button class="quick-action-btn" onclick="app.switchTab('dailies')">
+                            <i class="fas fa-arrow-right"></i> Manage Quests
+                        </button>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Streak</span>
-                        <span class="stat-value" id="player-streak">0</span>
+
+                    <!-- Cosmic Tasks Overview -->
+                    <div class="dashboard-card tasks-overview">
+                        <h3><i class="fas fa-scroll"></i> Cosmic Tasks</h3>
+                        <div id="tasks-overview-content">
+                            <div class="overview-stat">
+                                <span>Pending Tasks</span>
+                                <span id="tasks-count-dash">0</span>
+                            </div>
+                            <div class="overview-stat">
+                                <span>Completed Today</span>
+                                <span id="tasks-completed-dash">0</span>
+                            </div>
+                        </div>
+                        <button class="quick-action-btn" onclick="app.switchTab('todos')">
+                            <i class="fas fa-arrow-right"></i> Manage Tasks
+                        </button>
+                    </div>
+
+                    <!-- StarCores Overview -->
+                    <div class="dashboard-card starcores-overview">
+                        <h3><i class="fas fa-flame"></i> StarCores</h3>
+                        <div id="starcores-overview-content">
+                            <div class="overview-stat">
+                                <span>Active Cores</span>
+                                <span id="starcores-count-dash">0</span>
+                            </div>
+                            <div class="overview-stat">
+                                <span>Energized Today</span>
+                                <span id="starcores-completed-dash">0</span>
+                            </div>
+                        </div>
+                        <button class="quick-action-btn" onclick="app.switchTab('habits')">
+                            <i class="fas fa-arrow-right"></i> Manage Cores
+                        </button>
+                    </div>
+
+                    <!-- Observatory (Stats) -->
+                    <div class="dashboard-card observatory">
+                        <h3><i class="fas fa-chart-line"></i> Stellar Observatory</h3>
+                        <div class="stats-mini">
+                            <div class="stat-row">
+                                <span>Total Stellar Tasks</span>
+                                <span id="tasks-total-dash">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Current Streak</span>
+                                <span id="current-streak-dash">0 cycles</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Best Streak</span>
+                                <span id="best-streak-dash">0 cycles</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Codex Entries</span>
+                                <span id="achievements-unlocked-dash">0</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="xp-bar-container">
-                <div class="xp-bar">
-                    <div class="xp-fill" id="xp-fill"></div>
+
+            <!-- Character Tab -->
+            <div class="tab-content" id="character-tab">
+                <div class="section-header">
+                    <h2>StarSmith Profile</h2>
                 </div>
-                <span class="xp-text" id="xp-text">0 / 100 Stardust</span>
+                <div class="character-container">
+                    <div class="character-avatar">
+                        <div class="avatar-display">
+                            <i class="fas fa-user-astronaut"></i>
+                        </div>
+                        <div class="character-info">
+                            <h3>Level <span id="player-level-char">1</span> StarSmith</h3>
+                            <div class="xp-progress">
+                                <div class="xp-bar">
+                                    <div class="xp-fill" id="xp-fill-char"></div>
+                                </div>
+                                <span class="xp-text" id="xp-text-char">0 / 100 Stardust</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="character-stats">
+                        <div class="stat-card">
+                            <h3>Cosmic Essence</h3>
+                            <div class="stat-row">
+                                <span>Total Stardust Collected</span>
+                                <span id="total-stardust-char">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Cosmic Orbs</span>
+                                <span id="total-orbs-char">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Current Level</span>
+                                <span id="current-level-char">1</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h3>Achievements</h3>
+                            <div class="stat-row">
+                                <span>Stellar Tasks Completed</span>
+                                <span id="tasks-completed-char">0</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Longest Streak</span>
+                                <span id="best-streak-char">0 cycles</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>Codex Entries Unlocked</span>
+                                <span id="codex-entries-char">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </header>
 
-        <!-- Navigation -->
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-tab="habits">
-                <i class="fas fa-flame"></i>
-                <span>StarCores</span>
-            </button>
-            <button class="nav-tab" data-tab="dailies">
-                <i class="fas fa-sun"></i>
-                <span>Daily Quests</span>
-            </button>
-            <button class="nav-tab" data-tab="todos">
-                <i class="fas fa-scroll"></i>
-                <span>Cosmic Tasks</span>
-            </button>
-            <button class="nav-tab" data-tab="achievements">
-                <i class="fas fa-trophy"></i>
-                <span>Codex</span>
-            </button>
-            <button class="nav-tab" data-tab="stats">
-                <i class="fas fa-chart-line"></i>
-                <span>Observatory</span>
-            </button>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Habits Tab -->
-            <div class="tab-content active" id="habits-tab">
+            <!-- StarCores Tab -->
+            <div class="tab-content" id="habits-tab">
                 <div class="section-header">
                     <h2>StarCore Forge</h2>
                     <button class="add-btn" id="add-habit-btn">
@@ -126,6 +275,52 @@
                 </div>
             </div>
 
+            <!-- Vault Tab -->
+            <div class="tab-content" id="vault-tab">
+                <div class="section-header">
+                    <h2>Stellar Vault</h2>
+                </div>
+                <div class="vault-container">
+                    <div class="vault-summary">
+                        <div class="vault-stat">
+                            <h3>Cosmic Orbs</h3>
+                            <div class="vault-value" id="vault-orbs">0</div>
+                        </div>
+                        <div class="vault-stat">
+                            <h3>Total Stardust</h3>
+                            <div class="vault-value" id="vault-stardust">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vault-items">
+                        <h3>Cosmic Artifacts</h3>
+                        <div class="artifact-grid">
+                            <div class="artifact-item">
+                                <i class="fas fa-gem"></i>
+                                <h4>Stellar Booster</h4>
+                                <p>+20% Stardust for next 5 tasks</p>
+                                <div class="artifact-cost">Cost: 100 Orbs</div>
+                                <button class="artifact-btn" onclick="app.purchaseArtifact('booster')">Acquire</button>
+                            </div>
+                            <div class="artifact-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Cosmic Shield</h4>
+                                <p>Protect streak from one missed day</p>
+                                <div class="artifact-cost">Cost: 150 Orbs</div>
+                                <button class="artifact-btn" onclick="app.purchaseArtifact('shield')">Acquire</button>
+                            </div>
+                            <div class="artifact-item">
+                                <i class="fas fa-star"></i>
+                                <h4>Nova Fragment</h4>
+                                <p>Instantly complete next task</p>
+                                <div class="artifact-cost">Cost: 200 Orbs</div>
+                                <button class="artifact-btn" onclick="app.purchaseArtifact('nova')">Acquire</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Achievements Tab -->
             <div class="tab-content" id="achievements-tab">
                 <div class="section-header">
@@ -135,59 +330,13 @@
                     <!-- Achievements will be populated by JavaScript -->
                 </div>
             </div>
-
-            <!-- Stats Tab -->
-            <div class="tab-content" id="stats-tab">
-                <div class="section-header">
-                    <h2>Stellar Observatory</h2>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Cosmic Activity</h3>
-                        <div class="stat-row">
-                            <span>Tasks Completed Today</span>
-                            <span id="tasks-today">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Tasks Completed This Week</span>
-                            <span id="tasks-week">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Total Stellar Tasks</span>
-                            <span id="tasks-total">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Current Streak</span>
-                            <span id="current-streak">0 cycles</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Best Streak</span>
-                            <span id="best-streak">0 cycles</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Stellar Arsenal</h3>
-                        <div class="stat-row">
-                            <span>Active StarCores</span>
-                            <span id="active-habits">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Daily Quests</span>
-                            <span id="active-dailies">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Cosmic Tasks</span>
-                            <span id="active-todos">0</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>Codex Entries</span>
-                            <span id="achievements-unlocked">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Task Modal -->
     <div class="modal-overlay" id="task-modal">
