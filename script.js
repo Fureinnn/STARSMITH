@@ -95,9 +95,19 @@ class QuestMasterApp {
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobile-menu-toggle');
         const mobileNav = document.getElementById('mobile-nav');
-        if (mobileToggle && mobileNav) {
+        const sidebar = document.getElementById('sidebar');
+        
+        if (mobileToggle) {
             mobileToggle.addEventListener('click', () => {
-                mobileNav.classList.toggle('active');
+                // Toggle mobile nav for tablet/mobile
+                if (mobileNav) {
+                    mobileNav.classList.toggle('active');
+                }
+                // Toggle sidebar for mobile
+                if (sidebar && window.innerWidth <= 1024) {
+                    sidebar.classList.toggle('active');
+                }
+                mobileToggle.classList.toggle('active');
             });
 
             // Close mobile menu when clicking outside
