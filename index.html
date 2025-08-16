@@ -78,6 +78,27 @@
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
     
+    <!-- Auth Required Overlay -->
+    <div class="auth-required-overlay" id="auth-required-overlay">
+        <div class="auth-required-content">
+            <div class="auth-required-header">
+                <i class="fas fa-star"></i>
+                <h2>Welcome to StarSmith's Crucible</h2>
+            </div>
+            <p>Please login or create an account to begin your cosmic journey</p>
+            <div class="auth-required-actions">
+                <button class="btn-primary" onclick="app.showAuthModal('login')">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <button class="btn-secondary" onclick="app.showAuthModal('register')">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <div class="app-container">
         <!-- Desktop Sidebar -->
         <aside class="sidebar" id="sidebar">

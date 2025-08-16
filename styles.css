@@ -41,6 +41,102 @@ body {
                       radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
 }
 
+/* Auth Required Overlay */
+.auth-required-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 35, 0.98);
+    backdrop-filter: blur(20px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 24px;
+}
+
+.auth-required-content {
+    text-align: center;
+    max-width: 400px;
+    background: var(--white);
+    padding: 48px 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(127, 0, 255, 0.3);
+    border: 1px solid rgba(127, 0, 255, 0.2);
+}
+
+.auth-required-header {
+    margin-bottom: 24px;
+}
+
+.auth-required-header i {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 16px;
+    display: block;
+    animation: star-pulse 3s ease-in-out infinite;
+}
+
+.auth-required-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.auth-required-content p {
+    color: var(--gray-500);
+    margin-bottom: 32px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.auth-required-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.auth-required-actions .btn-primary,
+.auth-required-actions .btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-family: inherit;
+}
+
+.auth-required-actions .btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 4px 20px rgba(127, 0, 255, 0.3);
+}
+
+.auth-required-actions .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(127, 0, 255, 0.4);
+}
+
+.auth-required-actions .btn-secondary {
+    background: var(--gray-100);
+    color: var(--text);
+    border: 1px solid var(--gray-200);
+}
+
+.auth-required-actions .btn-secondary:hover {
+    background: var(--gray-200);
+    transform: translateY(-2px);
+}
+
 /* App Container */
 .app-container {
     display: flex;

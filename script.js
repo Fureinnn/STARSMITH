@@ -17,14 +17,9 @@ class QuestMasterApp {
 
         // Initialize UI
         this.initializeUI();
-        this.updateUI();
-        this.checkDailyReset();
         
-        // Check for achievements on startup
-        this.checkAchievements();
-        
-        // Load authentication state
-        this.loadAuthState();
+        // Check authentication and show app or login
+        this.initializeAuthState();
     }
 
     loadPlayerData() {
@@ -202,11 +197,14 @@ class QuestMasterApp {
     login(user) {
         localStorage.setItem('questmaster_currentUser', JSON.stringify(user));
         this.updateAuthUI(true, user);
+        this.hideAuthModal();
+        this.showMainApp();
     }
     
     logout() {
         localStorage.removeItem('questmaster_currentUser');
         this.updateAuthUI(false);
+        this.showAuthRequired();
     }
     
     checkAuthState() {
@@ -214,12 +212,41 @@ class QuestMasterApp {
         return !!user;
     }
     
-    loadAuthState() {
+    initializeAuthState() {
         const userStr = localStorage.getItem('questmaster_currentUser');
         if (userStr) {
             const user = JSON.parse(userStr);
             this.updateAuthUI(true, user);
+            this.showMainApp();
+        } else {
+            this.showAuthRequired();
         }
+    }
+    
+    showMainApp() {
+        // Hide auth requirement and show main app
+        const authRequired = document.getElementById('auth-required-overlay');
+        const mainContainer = document.querySelector('.main-container');
+        
+        if (authRequired) authRequired.style.display = 'none';
+        if (mainContainer) mainContainer.style.display = 'block';
+        
+        // Now initialize the rest of the app
+        this.updateUI();
+        this.checkDailyReset();
+        this.checkAchievements();
+    }
+    
+    showAuthRequired() {
+        // Show auth requirement overlay
+        const authRequired = document.getElementById('auth-required-overlay');
+        const mainContainer = document.querySelector('.main-container');
+        
+        if (authRequired) authRequired.style.display = 'flex';
+        if (mainContainer) mainContainer.style.display = 'none';
+        
+        // Show auth modal automatically
+        this.showAuthModal('login');
     }
     
     updateAuthUI(isLoggedIn, user = null) {
