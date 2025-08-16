@@ -193,32 +193,6 @@ class AchievementManager {
         notification.addEventListener('click', dismissHandler);
     }
 
-    showLevelUpNotification(newLevel) {
-        const notification = document.getElementById('level-up-notification');
-        const description = document.getElementById('level-up-description');
-
-        description.textContent = `You've reached level ${newLevel}!`;
-
-        notification.classList.add('show');
-
-        // Play level up sound effect
-        this.playLevelUpSound();
-
-        // Create level up particles
-        this.createLevelUpParticles();
-
-        // Auto-dismiss after 3 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
-        
-        // Click to dismiss immediately
-        const dismissHandler = () => {
-            notification.classList.remove('show');
-            notification.removeEventListener('click', dismissHandler);
-        };
-        notification.addEventListener('click', dismissHandler);
-    }
 
     playAchievementSound() {
         // Create a simple achievement sound using Web Audio API
@@ -245,32 +219,6 @@ class AchievementManager {
         }
     }
 
-    playLevelUpSound() {
-        // Create a level up sound
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            // Ascending scale
-            const frequencies = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-            frequencies.forEach((freq, index) => {
-                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.15);
-            });
-
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.01);
-            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.6);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.6);
-        } catch (e) {
-            console.log('Web Audio API not supported');
-        }
-    }
 
     createConfetti() {
         const container = document.getElementById('particles-container');
@@ -293,26 +241,6 @@ class AchievementManager {
         }
     }
 
-    createLevelUpParticles() {
-        const container = document.getElementById('particles-container');
-
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * window.innerWidth + 'px';
-            particle.style.top = window.innerHeight + 'px';
-            particle.style.background = '#F59E0B';
-            particle.style.width = '12px';
-            particle.style.height = '12px';
-            particle.style.animationDelay = Math.random() * 1 + 's';
-
-            container.appendChild(particle);
-
-            setTimeout(() => {
-                particle.remove();
-            }, 3000);
-        }
-    }
 
     getUnlockedCount() {
         return this.achievements.filter(a => a.unlocked).length;

@@ -1514,8 +1514,7 @@ body {
 }
 
 /* Notifications */
-.achievement-notification,
-.level-up-notification {
+.achievement-notification {
     position: fixed;
     top: 24px;
     right: 24px;
@@ -1530,34 +1529,29 @@ body {
     max-width: 350px;
 }
 
-.achievement-notification.show,
-.level-up-notification.show {
+.achievement-notification.show {
     transform: translateX(0);
 }
 
-.achievement-content,
-.level-up-content {
+.achievement-content {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.achievement-content i,
-.level-up-content i {
+.achievement-content i {
     font-size: 1.5rem;
     color: var(--secondary);
 }
 
-.achievement-text h4,
-.level-up-text h4 {
+.achievement-text h4 {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text);
     margin-bottom: 4px;
 }
 
-.achievement-text p,
-.level-up-text p {
+.achievement-text p {
     font-size: 0.875rem;
     color: var(--gray-600);
     margin: 0;
@@ -1873,8 +1867,7 @@ body::before {
         border-radius: 16px;
     }
     
-    .achievement-notification.show,
-    .level-up-notification.show {
+    .achievement-notification.show {
         transform: translateY(0);
     }
 }
@@ -2053,18 +2046,7 @@ body::before {
 /* Better Mobile Notification Positioning */
 @media (max-width: 768px) {
     .achievement-notification,
-    .level-up-notification {
-        top: 80px !important;
-        right: 12px !important;
-        left: 12px !important;
-        max-width: none !important;
-        z-index: 1002 !important;
-        transform: translateY(-100%) !important;
-        transition: all 0.4s ease !important;
-    }
-    
-    .achievement-notification.show,
-    .level-up-notification.show {
+    .achievement-notification.show {
         transform: translateY(0) !important;
     }
 }
