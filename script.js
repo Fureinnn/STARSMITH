@@ -602,7 +602,7 @@ class QuestMasterApp {
         if (this.player.xp >= xpNeeded) {
             this.player.level++;
             this.player.xp -= xpNeeded;
-            this.achievementManager.showLevelUpNotification(this.player.level);
+            // this.achievementManager.showLevelUpNotification(this.player.level);
         }
 
         // Check if level changed for achievement purposes
