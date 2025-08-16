@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character - StarSmith's Crucible</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Floating Header -->
+    <header class="floating-header">
+        <div class="header-left">
+            <div class="header-title">
+                <i class="fas fa-star"></i>
+                <span>StarSmith's Crucible</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-stats">
+                <div class="header-stat">
+                    <i class="fas fa-level-up-alt"></i>
+                    <span>Lvl <span class="header-stat-value" id="header-level">1</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-sparkles"></i>
+                    <span><span class="header-stat-value" id="header-stardust">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-coins"></i>
+                    <span><span class="header-stat-value" id="header-orbs">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-fire"></i>
+                    <span><span class="header-stat-value" id="header-streak">0</span></span>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
+    <div class="app-container">
+        <!-- Desktop Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="app-title">
+                    <i class="fas fa-star"></i>
+                    <span>StarSmith's Crucible</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="character.html" class="nav-item active">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Character</span>
+                </a>
+                <a href="habits.html" class="nav-item">
+                    <i class="fas fa-atom"></i>
+                    <span>StarCores</span>
+                </a>
+                <a href="dailies.html" class="nav-item">
+                    <i class="fas fa-sun"></i>
+                    <span>Dailies</span>
+                </a>
+                <a href="todos.html" class="nav-item">
+                    <i class="fas fa-scroll"></i>
+                    <span>Tasks</span>
+                </a>
+                <a href="vault.html" class="nav-item">
+                    <i class="fas fa-gem"></i>
+                    <span>Vault</span>
+                </a>
+                <a href="achievements.html" class="nav-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Codex</span>
+                </a>
+                <div class="nav-separator"></div>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="user-name">Guest User</span>
+                        <span class="user-status">Logged in</span>
+                    </div>
+                </div>
+                <button class="auth-btn" id="auth-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-container">
+            <div class="section-header">
+                <h2>StarSmith Profile</h2>
+            </div>
+            <div class="character-container">
+                <div class="character-avatar">
+                    <div class="avatar-display">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div class="character-info">
+                        <h3>Level <span id="player-level-char">1</span> StarSmith</h3>
+                        <div class="xp-progress">
+                            <div class="xp-bar">
+                                <div class="xp-fill" id="xp-fill-char"></div>
+                            </div>
+                            <span class="xp-text" id="xp-text-char">0 / 100 Stardust</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="character-stats">
+                    <div class="stat-card">
+                        <h3>Cosmic Essence</h3>
+                        <div class="stat-row">
+                            <span>Total Stardust Collected</span>
+                            <span id="total-stardust-char">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Cosmic Orbs</span>
+                            <span id="total-orbs-char">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Current Level</span>
+                            <span id="current-level-char">1</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Achievements</h3>
+                        <div class="stat-row">
+                            <span>Stellar Tasks Completed</span>
+                            <span id="tasks-completed-char">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Longest Streak</span>
+                            <span id="best-streak-char">0 cycles</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Codex Entries Unlocked</span>
+                            <span id="codex-entries-char">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reward Particles -->
+    <div class="particles-container" id="particles-container"></div>
+
+    <script src="achievements.js"></script>
+    <script src="character.js"></script>
+</body>
+</html>

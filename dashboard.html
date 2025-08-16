@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - StarSmith's Crucible</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Floating Header -->
+    <header class="floating-header">
+        <div class="header-left">
+            <div class="header-title">
+                <i class="fas fa-star"></i>
+                <span>StarSmith's Crucible</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-stats">
+                <div class="header-stat">
+                    <i class="fas fa-level-up-alt"></i>
+                    <span>Lvl <span class="header-stat-value" id="header-level">1</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-sparkles"></i>
+                    <span><span class="header-stat-value" id="header-stardust">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-coins"></i>
+                    <span><span class="header-stat-value" id="header-orbs">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-fire"></i>
+                    <span><span class="header-stat-value" id="header-streak">0</span></span>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
+    <div class="app-container">
+        <!-- Desktop Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="app-title">
+                    <i class="fas fa-star"></i>
+                    <span>StarSmith's Crucible</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="character.html" class="nav-item">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Character</span>
+                </a>
+                <a href="habits.html" class="nav-item">
+                    <i class="fas fa-atom"></i>
+                    <span>StarCores</span>
+                </a>
+                <a href="dailies.html" class="nav-item">
+                    <i class="fas fa-sun"></i>
+                    <span>Dailies</span>
+                </a>
+                <a href="todos.html" class="nav-item">
+                    <i class="fas fa-scroll"></i>
+                    <span>Tasks</span>
+                </a>
+                <a href="vault.html" class="nav-item">
+                    <i class="fas fa-gem"></i>
+                    <span>Vault</span>
+                </a>
+                <a href="achievements.html" class="nav-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Codex</span>
+                </a>
+                <div class="nav-separator"></div>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="user-name">Guest User</span>
+                        <span class="user-status">Logged in</span>
+                    </div>
+                </div>
+                <button class="auth-btn" id="auth-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-container">
+            <!-- Dashboard Tab -->
+            <div class="dashboard-header">
+                <h2>Stellar Command Center</h2>
+                <div class="player-stats-compact">
+                    <div class="stat-item">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value" id="player-level-dash">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Stardust</span>
+                        <span class="stat-value" id="player-xp-dash">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Orbs</span>
+                        <span class="stat-value" id="player-gold-dash">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Streak</span>
+                        <span class="stat-value" id="player-streak-dash">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="xp-bar-container">
+                <div class="xp-bar">
+                    <div class="xp-fill" id="xp-fill-dash"></div>
+                </div>
+                <span class="xp-text" id="xp-text-dash">0 / 100 Stardust</span>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Daily Challenges Overview -->
+                <div class="dashboard-card daily-overview">
+                    <h3><i class="fas fa-sun"></i> Today's Challenges</h3>
+                    <div id="daily-overview-content">
+                        <div class="overview-stat">
+                            <span>Active Quests</span>
+                            <span id="daily-count-dash">0</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span>Completed Today</span>
+                            <span id="daily-completed-dash">0</span>
+                        </div>
+                    </div>
+                    <a href="dailies.html" class="quick-action-btn">
+                        <i class="fas fa-arrow-right"></i> Manage Quests
+                    </a>
+                </div>
+
+                <!-- Cosmic Tasks Overview -->
+                <div class="dashboard-card tasks-overview">
+                    <h3><i class="fas fa-scroll"></i> Cosmic Tasks</h3>
+                    <div id="tasks-overview-content">
+                        <div class="overview-stat">
+                            <span>Pending Tasks</span>
+                            <span id="tasks-count-dash">0</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span>Completed Today</span>
+                            <span id="tasks-completed-dash">0</span>
+                        </div>
+                    </div>
+                    <a href="todos.html" class="quick-action-btn">
+                        <i class="fas fa-arrow-right"></i> Manage Tasks
+                    </a>
+                </div>
+
+                <!-- StarCores Overview -->
+                <div class="dashboard-card starcores-overview">
+                    <h3><i class="fas fa-atom"></i> StarCores</h3>
+                    <div id="starcores-overview-content">
+                        <div class="overview-stat">
+                            <span>Active Cores</span>
+                            <span id="starcores-count-dash">0</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span>Energized Today</span>
+                            <span id="starcores-completed-dash">0</span>
+                        </div>
+                    </div>
+                    <a href="habits.html" class="quick-action-btn">
+                        <i class="fas fa-arrow-right"></i> Manage Cores
+                    </a>
+                </div>
+
+                <!-- Observatory (Stats) -->
+                <div class="dashboard-card observatory">
+                    <h3><i class="fas fa-chart-line"></i> Stellar Observatory</h3>
+                    <div class="stats-mini">
+                        <div class="stat-row">
+                            <span>Total Stellar Tasks</span>
+                            <span id="tasks-total-dash">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Current Streak</span>
+                            <span id="current-streak-dash">0 cycles</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Best Streak</span>
+                            <span id="best-streak-dash">0 cycles</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Codex Entries</span>
+                            <span id="achievements-unlocked-dash">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reward Particles -->
+    <div class="particles-container" id="particles-container"></div>
+
+    <script src="achievements.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

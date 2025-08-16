@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - StarSmith's Crucible</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Auth Required Overlay -->
+    <div class="auth-required-overlay" style="display: flex;">
+        <div class="auth-required-content">
+            <div class="auth-required-header">
+                <i class="fas fa-star"></i>
+                <h2>Welcome to StarSmith's Crucible</h2>
+            </div>
+            <p>Please login or create an account to begin your cosmic journey</p>
+            <div class="auth-required-actions">
+                <button class="btn-primary" onclick="showAuthModal('login')">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <button class="btn-secondary" onclick="showAuthModal('register')">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="auth-modal-title">Sign In</h3>
+                <button class="modal-close" id="auth-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <form id="login-form" style="display: block;">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="modal-footer">
+                    <span id="auth-toggle-text">Don't have an account?</span>
+                    <button type="button" id="auth-toggle-btn">Create one</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAuthModal(type = 'login') {
+            const authModal = document.getElementById('auth-modal');
+            const authModalTitle = document.getElementById('auth-modal-title');
+            const authToggleText = document.getElementById('auth-toggle-text');
+            const authToggleBtn = document.getElementById('auth-toggle-btn');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            
+            if (type === 'login') {
+                authModalTitle.textContent = 'Sign In';
+                authToggleText.textContent = "Don't have an account?";
+                authToggleBtn.textContent = 'Create one';
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                authModalTitle.textContent = 'Create Account';
+                authToggleText.textContent = 'Already have an account?';
+                authToggleBtn.textContent = 'Sign in';
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+            
+            authModal.classList.add('active');
+        }
+
+        function hideAuthModal() {
+            const authModal = document.getElementById('auth-modal');
+            authModal.classList.remove('active');
+            document.getElementById('login-form').reset();
+            document.getElementById('register-form').reset();
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const users = JSON.parse(localStorage.getItem('questmaster_users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('questmaster_currentUser', JSON.stringify(user));
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('Invalid email or password');
+            }
+        }
+
+        function handleRegister() {
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('questmaster_users') || '[]');
+            
+            if (users.find(u => u.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+            
+            const newUser = {
+                id: Date.now().toString(),
+                name,
+                email,
+                password,
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('questmaster_users', JSON.stringify(users));
+            localStorage.setItem('questmaster_currentUser', JSON.stringify(newUser));
+            window.location.href = 'dashboard.html';
+        }
+
+        // Event listeners
+        document.getElementById('auth-modal-close').addEventListener('click', hideAuthModal);
+        document.getElementById('auth-modal').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                hideAuthModal();
+            }
+        });
+        document.getElementById('auth-toggle-btn').addEventListener('click', () => {
+            const loginVisible = document.getElementById('login-form').style.display !== 'none';
+            showAuthModal(loginVisible ? 'register' : 'login');
+        });
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleLogin();
+        });
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleRegister();
+        });
+
+        // Check if already logged in
+        if (localStorage.getItem('questmaster_currentUser')) {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
