@@ -1513,49 +1513,6 @@ body {
     background: var(--gray-300);
 }
 
-/* Notifications */
-.achievement-notification {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    background: var(--white);
-    border-radius: 12px;
-    padding: 16px 20px;
-    box-shadow: var(--shadow-xl);
-    border-left: 4px solid var(--secondary);
-    z-index: 1001;
-    transform: translateX(400px);
-    transition: all 0.5s ease;
-    max-width: 350px;
-}
-
-.achievement-notification.show {
-    transform: translateX(0);
-}
-
-.achievement-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.achievement-content i {
-    font-size: 1.5rem;
-    color: var(--secondary);
-}
-
-.achievement-text h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 4px;
-}
-
-.achievement-text p {
-    font-size: 0.875rem;
-    color: var(--gray-600);
-    margin: 0;
-}
 
 /* Particles */
 .particles-container {
@@ -1858,18 +1815,6 @@ body::before {
         border-radius: 20px;
     }
     
-    .achievement-notification,
-    .level-up-notification {
-        right: 12px;
-        left: 12px;
-        max-width: none;
-        transform: translateY(-100px);
-        border-radius: 16px;
-    }
-    
-    .achievement-notification.show {
-        transform: translateY(0);
-    }
 }
 
 /* Small Mobile Styles */
@@ -2043,13 +1988,6 @@ body::before {
 }
 
 
-/* Better Mobile Notification Positioning */
-@media (max-width: 768px) {
-    .achievement-notification,
-    .achievement-notification.show {
-        transform: translateY(0) !important;
-    }
-}
 
 
 /* Sidebar Footer and User Info */

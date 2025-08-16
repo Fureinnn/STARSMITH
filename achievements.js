@@ -156,90 +156,15 @@ class AchievementManager {
 
         if (newlyUnlocked.length > 0) {
             this.saveAchievements();
-            newlyUnlocked.forEach(achievement => {
-                this.showAchievementNotification(achievement);
-            });
         }
 
         return newlyUnlocked;
     }
 
-    showAchievementNotification(achievement) {
-        const notification = document.getElementById('achievement-notification');
-        const title = document.getElementById('achievement-title');
-        const description = document.getElementById('achievement-description');
-
-        title.textContent = achievement.title;
-        description.textContent = achievement.description;
-
-        notification.classList.add('show');
-
-        // Play achievement sound effect (if audio context is available)
-        this.playAchievementSound();
-
-        // Create confetti particles
-        this.createConfetti();
-
-        // Auto-dismiss after 4 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 4000);
-        
-        // Click to dismiss immediately
-        const dismissHandler = () => {
-            notification.classList.remove('show');
-            notification.removeEventListener('click', dismissHandler);
-        };
-        notification.addEventListener('click', dismissHandler);
-    }
 
 
-    playAchievementSound() {
-        // Create a simple achievement sound using Web Audio API
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
-            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.3);
-
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
-        } catch (e) {
-            console.log('Web Audio API not supported');
-        }
-    }
 
 
-    createConfetti() {
-        const container = document.getElementById('particles-container');
-        const colors = ['#F59E0B', '#7C3AED', '#10B981', '#EC4899'];
-
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * window.innerWidth + 'px';
-            particle.style.top = window.innerHeight + 'px';
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-            particle.style.animationDelay = Math.random() * 2 + 's';
-            particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
-
-            container.appendChild(particle);
-
-            setTimeout(() => {
-                particle.remove();
-            }, 4000);
-        }
-    }
 
 
     getUnlockedCount() {
