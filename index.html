@@ -97,7 +97,7 @@
                     <span>Character</span>
                 </button>
                 <button class="nav-item" data-tab="habits">
-                    <i class="fas fa-flame"></i>
+                    <i class="fas fa-atom"></i>
                     <span>StarCores</span>
                 </button>
                 <button class="nav-item" data-tab="dailies">
@@ -116,7 +116,27 @@
                     <i class="fas fa-trophy"></i>
                     <span>Codex</span>
                 </button>
+                <div class="nav-separator"></div>
+                <button class="nav-item" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
             </nav>
+            <div class="sidebar-footer">
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="user-name">Guest User</span>
+                        <span class="user-status">Not logged in</span>
+                    </div>
+                </div>
+                <button class="auth-btn" id="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </button>
+            </div>
         </aside>
         
         <!-- Main Content Area -->
@@ -190,7 +210,7 @@
 
                     <!-- StarCores Overview -->
                     <div class="dashboard-card starcores-overview">
-                        <h3><i class="fas fa-flame"></i> StarCores</h3>
+                        <h3><i class="fas fa-atom"></i> StarCores</h3>
                         <div id="starcores-overview-content">
                             <div class="overview-stat">
                                 <span>Active Cores</span>
@@ -291,7 +311,7 @@
             <!-- StarCores Tab -->
             <div class="tab-content" id="habits-tab">
                 <div class="section-header">
-                    <h2>StarCore Forge</h2>
+                    <h2><i class="fas fa-atom"></i> StarCore Forge</h2>
                     <button class="add-btn" id="add-habit-btn">
                         <i class="fas fa-plus"></i>
                         Forge StarCore
@@ -397,6 +417,65 @@
                     <!-- Achievements will be populated by JavaScript -->
                 </div>
             </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="section-header">
+                    <h2>Account Settings</h2>
+                </div>
+                <div class="settings-container">
+                    <div class="settings-section">
+                        <h3><i class="fas fa-user"></i> Profile</h3>
+                        <div class="setting-item">
+                            <label>Display Name</label>
+                            <input type="text" id="display-name" placeholder="Enter your display name">
+                        </div>
+                        <div class="setting-item">
+                            <label>Email</label>
+                            <input type="email" id="email" placeholder="Enter your email">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-bell"></i> Notifications</h3>
+                        <div class="setting-item">
+                            <label class="switch">
+                                <input type="checkbox" id="achievement-notifications" checked>
+                                <span class="slider"></span>
+                                Achievement Notifications
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label class="switch">
+                                <input type="checkbox" id="level-notifications" checked>
+                                <span class="slider"></span>
+                                Level Up Notifications
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3><i class="fas fa-palette"></i> Appearance</h3>
+                        <div class="setting-item">
+                            <label>Theme</label>
+                            <select id="theme-selector">
+                                <option value="cosmic">Cosmic (Default)</option>
+                                <option value="dark">Dark Space</option>
+                                <option value="nebula">Nebula</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section danger">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Data Management</h3>
+                        <button class="btn-danger" id="reset-data-btn">
+                            <i class="fas fa-trash-alt"></i>
+                            Reset All Data
+                        </button>
+                        <p class="warning-text">This will permanently delete all your progress, tasks, and achievements.</p>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -471,3 +550,61 @@
     <script src="script.js"></script>
 </body>
 </html>
+    <!-- Authentication Modal -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal auth-modal">
+            <div class="modal-header">
+                <h3 id="auth-modal-title">Sign In</h3>
+                <button class="modal-close" id="auth-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Login Form -->
+                <form class="auth-form" id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn-primary auth-submit">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+                
+                <!-- Register Form -->
+                <form class="auth-form" id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="register-name">Display Name</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" required>
+                    </div>
+                    <button type="submit" class="btn-primary auth-submit">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-toggle">
+                    <p id="auth-toggle-text">Don't have an account?</p>
+                    <button class="btn-link" id="auth-toggle-btn">Create one</button>
+                </div>
+            </div>
+        </div>
+    </div>
+

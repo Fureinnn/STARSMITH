@@ -22,6 +22,9 @@ class QuestMasterApp {
         
         // Check for achievements on startup
         this.checkAchievements();
+        
+        // Load authentication state
+        this.loadAuthState();
     }
 
     loadPlayerData() {
@@ -47,6 +50,205 @@ class QuestMasterApp {
 
         const saved = localStorage.getItem('questmaster_player');
         return saved ? { ...defaultPlayer, ...JSON.parse(saved) } : defaultPlayer;
+    }
+    
+    initializeAuth() {
+        // Auth button functionality
+        const authBtn = document.getElementById('auth-btn');
+        const authModal = document.getElementById('auth-modal');
+        const authModalClose = document.getElementById('auth-modal-close');
+        const authToggleBtn = document.getElementById('auth-toggle-btn');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        
+        if (authBtn) {
+            authBtn.addEventListener('click', () => {
+                const isLoggedIn = this.checkAuthState();
+                if (isLoggedIn) {
+                    this.logout();
+                } else {
+                    this.showAuthModal('login');
+                }
+            });
+        }
+        
+        if (authModalClose) {
+            authModalClose.addEventListener('click', () => {
+                this.hideAuthModal();
+            });
+        }
+        
+        if (authModal) {
+            authModal.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal-overlay')) {
+                    this.hideAuthModal();
+                }
+            });
+        }
+        
+        if (authToggleBtn) {
+            authToggleBtn.addEventListener('click', () => {
+                const loginVisible = loginForm.style.display !== 'none';
+                this.showAuthModal(loginVisible ? 'register' : 'login');
+            });
+        }
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleLogin();
+            });
+        }
+        
+        if (registerForm) {
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleRegister();
+            });
+        }
+        
+        // Settings functionality
+        const resetDataBtn = document.getElementById('reset-data-btn');
+        if (resetDataBtn) {
+            resetDataBtn.addEventListener('click', () => {
+                this.resetAllData();
+            });
+        }
+    }
+    
+    showAuthModal(type = 'login') {
+        const authModal = document.getElementById('auth-modal');
+        const authModalTitle = document.getElementById('auth-modal-title');
+        const authToggleText = document.getElementById('auth-toggle-text');
+        const authToggleBtn = document.getElementById('auth-toggle-btn');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        
+        if (type === 'login') {
+            authModalTitle.textContent = 'Sign In';
+            authToggleText.textContent = "Don't have an account?";
+            authToggleBtn.textContent = 'Create one';
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        } else {
+            authModalTitle.textContent = 'Create Account';
+            authToggleText.textContent = 'Already have an account?';
+            authToggleBtn.textContent = 'Sign in';
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        }
+        
+        authModal.classList.add('active');
+    }
+    
+    hideAuthModal() {
+        const authModal = document.getElementById('auth-modal');
+        authModal.classList.remove('active');
+        
+        // Clear forms
+        document.getElementById('login-form').reset();
+        document.getElementById('register-form').reset();
+    }
+    
+    handleLogin() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Simple local authentication for demo
+        const users = JSON.parse(localStorage.getItem('questmaster_users') || '[]');
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+            this.login(user);
+            this.hideAuthModal();
+        } else {
+            alert('Invalid email or password');
+        }
+    }
+    
+    handleRegister() {
+        const name = document.getElementById('register-name').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+        const confirm = document.getElementById('register-confirm').value;
+        
+        if (password !== confirm) {
+            alert('Passwords do not match');
+            return;
+        }
+        
+        const users = JSON.parse(localStorage.getItem('questmaster_users') || '[]');
+        
+        if (users.find(u => u.email === email)) {
+            alert('Email already registered');
+            return;
+        }
+        
+        const newUser = {
+            id: Date.now().toString(),
+            name,
+            email,
+            password,
+            createdAt: new Date().toISOString()
+        };
+        
+        users.push(newUser);
+        localStorage.setItem('questmaster_users', JSON.stringify(users));
+        
+        this.login(newUser);
+        this.hideAuthModal();
+    }
+    
+    login(user) {
+        localStorage.setItem('questmaster_currentUser', JSON.stringify(user));
+        this.updateAuthUI(true, user);
+    }
+    
+    logout() {
+        localStorage.removeItem('questmaster_currentUser');
+        this.updateAuthUI(false);
+    }
+    
+    checkAuthState() {
+        const user = localStorage.getItem('questmaster_currentUser');
+        return !!user;
+    }
+    
+    loadAuthState() {
+        const userStr = localStorage.getItem('questmaster_currentUser');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            this.updateAuthUI(true, user);
+        }
+    }
+    
+    updateAuthUI(isLoggedIn, user = null) {
+        const authBtn = document.getElementById('auth-btn');
+        const userName = document.getElementById('user-name');
+        const userStatus = document.querySelector('.user-status');
+        
+        if (isLoggedIn && user) {
+            authBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i><span>Logout</span>';
+            userName.textContent = user.name;
+            userStatus.textContent = 'Logged in';
+        } else {
+            authBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Login</span>';
+            userName.textContent = 'Guest User';
+            userStatus.textContent = 'Not logged in';
+        }
+    }
+    
+    resetAllData() {
+        if (confirm('Are you sure you want to reset all data? This action cannot be undone.')) {
+            localStorage.removeItem('questmaster_player');
+            localStorage.removeItem('questmaster_habits');
+            localStorage.removeItem('questmaster_dailies');
+            localStorage.removeItem('questmaster_todos');
+            localStorage.removeItem('questmaster_vault');
+            localStorage.removeItem('questmaster_achievements');
+            alert('All data has been reset. The page will reload.');
+            location.reload();
+        }
     }
 
     loadTasks(type) {
@@ -132,6 +334,9 @@ class QuestMasterApp {
                 }
             });
         });
+        
+        // Authentication functionality
+        this.initializeAuth();
 
         // Add task buttons
         document.getElementById('add-habit-btn').addEventListener('click', () => this.openTaskModal('habits'));
