@@ -173,20 +173,20 @@ body {
     transform: scale(1.1);
 }
 
-/* Floating Header */
+/* Floating Header - Hidden on Desktop, Mobile Only */
 .floating-header {
     position: fixed;
     top: 0;
-    left: 280px;
+    left: 0;
     right: 0;
-    height: 80px;
+    height: 70px;
     background: rgba(30, 30, 63, 0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--gray-200);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 0 32px;
+    padding: 0 24px;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -307,7 +307,7 @@ body {
 .main-container {
     flex: 1;
     margin-left: 280px;
-    padding: 104px 32px 32px 32px;
+    padding: 32px;
     min-height: 100vh;
     overflow-y: auto;
     background: linear-gradient(135deg, 
@@ -1594,14 +1594,9 @@ body::before {
         width: 260px;
     }
     
-    .floating-header {
-        left: 260px;
-        padding: 0 24px;
-    }
-    
     .main-container {
         margin-left: 260px;
-        padding: 104px 24px 24px 24px;
+        padding: 24px;
     }
 }
 
@@ -1617,6 +1612,7 @@ body::before {
     }
     
     .floating-header {
+        display: flex;
         left: 0;
         height: 70px;
         padding: 0 24px;
