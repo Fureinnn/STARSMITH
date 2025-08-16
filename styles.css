@@ -1528,65 +1528,6 @@ body::before {
     }
 }
 
-/* Mobile Navigation */
-.mobile-nav {
-    display: none;
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    background: rgba(30, 30, 63, 0.98);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--gray-200);
-    z-index: 99;
-    padding: 16px;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
-}
-
-.mobile-nav.active {
-    transform: translateY(0);
-}
-
-.mobile-nav .nav-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
-
-.mobile-nav .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 12px 8px;
-    background: var(--gray-100);
-    border: none;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.mobile-nav .nav-item:hover {
-    background: var(--gray-200);
-    color: var(--primary);
-}
-
-.mobile-nav .nav-item.active {
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    color: var(--white);
-    box-shadow: 0 0 10px rgba(127, 0, 255, 0.3);
-}
-
-.mobile-nav .nav-item i {
-    font-size: 1.2rem;
-    margin-bottom: 4px;
-}
 
 /* Responsive Design */
 @media (max-width: 1200px) {

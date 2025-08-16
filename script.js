@@ -94,32 +94,44 @@ class QuestMasterApp {
 
         // Mobile menu toggle
         const mobileToggle = document.getElementById('mobile-menu-toggle');
-        const mobileNav = document.getElementById('mobile-nav');
         const sidebar = document.getElementById('sidebar');
         
         if (mobileToggle) {
             mobileToggle.addEventListener('click', () => {
-                // Toggle mobile nav for tablet/mobile
-                if (mobileNav) {
-                    mobileNav.classList.toggle('active');
-                }
                 // Toggle sidebar for mobile
                 if (sidebar && window.innerWidth <= 1024) {
                     sidebar.classList.toggle('active');
                 }
                 mobileToggle.classList.toggle('active');
-            });
-
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (window.innerWidth <= 1024 && 
-                    !mobileNav.contains(e.target) && 
-                    !mobileToggle.contains(e.target) &&
-                    mobileNav.classList.contains('active')) {
-                    mobileNav.classList.remove('active');
+                
+                // Show/hide sidebar overlay
+                const sidebarOverlay = document.getElementById('sidebar-overlay');
+                if (sidebarOverlay && window.innerWidth <= 1024) {
+                    sidebarOverlay.classList.toggle('active');
                 }
             });
         }
+        
+        // Sidebar overlay for mobile
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                if (sidebar) sidebar.classList.remove('active');
+                if (mobileToggle) mobileToggle.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+        
+        // Close sidebar when nav item is clicked on mobile
+        document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    if (sidebar) sidebar.classList.remove('active');
+                    if (mobileToggle) mobileToggle.classList.remove('active');
+                    if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
 
         // Add task buttons
         document.getElementById('add-habit-btn').addEventListener('click', () => this.openTaskModal('habits'));
