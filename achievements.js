@@ -180,9 +180,17 @@ class AchievementManager {
         // Create confetti particles
         this.createConfetti();
 
+        // Auto-dismiss after 4 seconds
         setTimeout(() => {
             notification.classList.remove('show');
         }, 4000);
+        
+        // Click to dismiss immediately
+        const dismissHandler = () => {
+            notification.classList.remove('show');
+            notification.removeEventListener('click', dismissHandler);
+        };
+        notification.addEventListener('click', dismissHandler);
     }
 
     showLevelUpNotification(newLevel) {
@@ -199,9 +207,17 @@ class AchievementManager {
         // Create level up particles
         this.createLevelUpParticles();
 
+        // Auto-dismiss after 3 seconds
         setTimeout(() => {
             notification.classList.remove('show');
         }, 3000);
+        
+        // Click to dismiss immediately
+        const dismissHandler = () => {
+            notification.classList.remove('show');
+            notification.removeEventListener('click', dismissHandler);
+        };
+        notification.addEventListener('click', dismissHandler);
     }
 
     playAchievementSound() {
