@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Subscription - StarSmith's Crucible</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Floating Header -->
+    <header class="floating-header">
+        <div class="header-left">
+            <div class="header-title">
+                <i class="fas fa-star"></i>
+                <span>StarSmith's Crucible</span>
+            </div>
+            <nav class="header-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="character.html" class="nav-item">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Character</span>
+                </a>
+                <a href="habits.html" class="nav-item">
+                    <i class="fas fa-flame"></i>
+                    <span>StarCores</span>
+                </a>
+                <a href="dailies.html" class="nav-item">
+                    <i class="fas fa-sun"></i>
+                    <span>Dailies</span>
+                </a>
+                <a href="todos.html" class="nav-item">
+                    <i class="fas fa-scroll"></i>
+                    <span>Tasks</span>
+                </a>
+                <a href="vault.html" class="nav-item">
+                    <i class="fas fa-gem"></i>
+                    <span>Vault</span>
+                </a>
+                <a href="achievements.html" class="nav-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Codex</span>
+                </a>
+                <a href="subscription.html" class="nav-item active">
+                    <i class="fas fa-crown"></i>
+                    <span>Premium</span>
+                </a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="header-stats">
+                <div class="header-stat">
+                    <i class="fas fa-level-up-alt"></i>
+                    <span>Lvl <span class="header-stat-value" id="header-level">1</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-sparkles"></i>
+                    <span><span class="header-stat-value" id="header-stardust">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-coins"></i>
+                    <span><span class="header-stat-value" id="header-orbs">0</span></span>
+                </div>
+                <div class="header-stat">
+                    <i class="fas fa-fire"></i>
+                    <span><span class="header-stat-value" id="header-streak">0</span></span>
+                </div>
+            </div>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="app-container">
+        <!-- Desktop Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="app-title">
+                    <i class="fas fa-star"></i>
+                    <span>StarSmith's Crucible</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="character.html" class="nav-item">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Character</span>
+                </a>
+                <a href="habits.html" class="nav-item">
+                    <i class="fas fa-atom"></i>
+                    <span>StarCores</span>
+                </a>
+                <a href="dailies.html" class="nav-item">
+                    <i class="fas fa-sun"></i>
+                    <span>Dailies</span>
+                </a>
+                <a href="todos.html" class="nav-item">
+                    <i class="fas fa-scroll"></i>
+                    <span>Tasks</span>
+                </a>
+                <a href="vault.html" class="nav-item">
+                    <i class="fas fa-gem"></i>
+                    <span>Vault</span>
+                </a>
+                <a href="achievements.html" class="nav-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Codex</span>
+                </a>
+                <div class="nav-separator"></div>
+                <a href="subscription.html" class="nav-item active">
+                    <i class="fas fa-crown"></i>
+                    <span>Premium</span>
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="user-name">Guest User</span>
+                        <span class="user-status">Not logged in</span>
+                    </div>
+                </div>
+                <button class="auth-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-container">
+            <div class="section-header">
+                <h2><i class="fas fa-crown"></i> Cosmic Premium</h2>
+                <p class="section-subtitle">Unlock the full power of the cosmos</p>
+            </div>
+
+            <div class="subscription-container">
+                <!-- Current Plan Status -->
+                <div class="current-plan-card">
+                    <div class="plan-header">
+                        <i class="fas fa-user-astronaut"></i>
+                        <h3>Current Plan</h3>
+                    </div>
+                    <div class="plan-content">
+                        <div class="plan-name" id="current-plan-name">Free Stargazer</div>
+                        <div class="plan-status" id="current-plan-status">Basic cosmic journey</div>
+                    </div>
+                </div>
+
+                <!-- Subscription Plans -->
+                <div class="plans-grid">
+                    <!-- Free Plan -->
+                    <div class="plan-card free-plan">
+                        <div class="plan-header">
+                            <i class="fas fa-star"></i>
+                            <h3>Stargazer</h3>
+                            <div class="plan-price">Free</div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Basic task management</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Core achievements</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Limited vault items</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Standard XP rates</span>
+                            </div>
+                        </div>
+                        <button class="plan-btn current-plan-btn" disabled>
+                            Current Plan
+                        </button>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="plan-card premium-plan featured">
+                        <div class="plan-badge">Most Popular</div>
+                        <div class="plan-header">
+                            <i class="fas fa-crown"></i>
+                            <h3>Cosmic Master</h3>
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount">9.99</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Everything in Stargazer</span>
+                            </div>
+                            <div class="feature-item premium-feature">
+                                <i class="fas fa-crown"></i>
+                                <span>+50% XP and Gold bonus</span>
+                            </div>
+                            <div class="feature-item premium-feature">
+                                <i class="fas fa-crown"></i>
+                                <span>Exclusive premium achievements</span>
+                            </div>
+                            <div class="feature-item premium-feature">
+                                <i class="fas fa-crown"></i>
+                                <span>Advanced vault artifacts</span>
+                            </div>
+                            <div class="feature-item premium-feature">
+                                <i class="fas fa-crown"></i>
+                                <span>Custom themes & avatars</span>
+                            </div>
+                            <div class="feature-item premium-feature">
+                                <i class="fas fa-crown"></i>
+                                <span>Priority support</span>
+                            </div>
+                        </div>
+                        <button class="plan-btn premium-btn" id="subscribe-premium-btn">
+                            <i class="fas fa-rocket"></i>
+                            Upgrade to Premium
+                        </button>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="plan-card enterprise-plan">
+                        <div class="plan-header">
+                            <i class="fas fa-galaxy"></i>
+                            <h3>Cosmic Emperor</h3>
+                            <div class="plan-price">
+                                <span class="currency">$</span>
+                                <span class="amount">19.99</span>
+                                <span class="period">/month</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Everything in Cosmic Master</span>
+                            </div>
+                            <div class="feature-item enterprise-feature">
+                                <i class="fas fa-galaxy"></i>
+                                <span>+100% XP and Gold bonus</span>
+                            </div>
+                            <div class="feature-item enterprise-feature">
+                                <i class="fas fa-galaxy"></i>
+                                <span>Legendary achievements</span>
+                            </div>
+                            <div class="feature-item enterprise-feature">
+                                <i class="fas fa-galaxy"></i>
+                                <span>Unlimited vault access</span>
+                            </div>
+                            <div class="feature-item enterprise-feature">
+                                <i class="fas fa-galaxy"></i>
+                                <span>Team collaboration features</span>
+                            </div>
+                            <div class="feature-item enterprise-feature">
+                                <i class="fas fa-galaxy"></i>
+                                <span>Advanced analytics</span>
+                            </div>
+                        </div>
+                        <button class="plan-btn enterprise-btn" id="subscribe-enterprise-btn">
+                            <i class="fas fa-crown"></i>
+                            Upgrade to Emperor
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Premium Benefits Section -->
+                <div class="benefits-section">
+                    <h3><i class="fas fa-sparkles"></i> Premium Benefits</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <i class="fas fa-bolt"></i>
+                            <h4>Accelerated Progress</h4>
+                            <p>Earn XP and Gold faster to level up quicker and unlock more content</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-trophy"></i>
+                            <h4>Exclusive Achievements</h4>
+                            <p>Unlock premium achievements that showcase your cosmic mastery</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-gem"></i>
+                            <h4>Advanced Artifacts</h4>
+                            <p>Access powerful vault items that enhance your stellar journey</p>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-palette"></i>
+                            <h4>Customization</h4>
+                            <p>Personalize your experience with exclusive themes and avatars</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Billing Information -->
+                <div class="billing-section" id="billing-section" style="display: none;">
+                    <h3><i class="fas fa-credit-card"></i> Billing Information</h3>
+                    <div class="billing-info">
+                        <div class="billing-item">
+                            <span>Next Billing Date:</span>
+                            <span id="next-billing-date">-</span>
+                        </div>
+                        <div class="billing-item">
+                            <span>Amount:</span>
+                            <span id="billing-amount">-</span>
+                        </div>
+                        <div class="billing-item">
+                            <span>Payment Method:</span>
+                            <span id="payment-method">-</span>
+                        </div>
+                    </div>
+                    <div class="billing-actions">
+                        <button class="btn-secondary" id="manage-billing-btn">
+                            <i class="fas fa-cog"></i>
+                            Manage Billing
+                        </button>
+                        <button class="btn-danger" id="cancel-subscription-btn">
+                            <i class="fas fa-times"></i>
+                            Cancel Subscription
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="common.js"></script>
+    <script src="script.js"></script>
+    <script src="subscription.js"></script>
+</body>
+</html>
