@@ -150,6 +150,34 @@
                             <button class="artifact-btn" onclick="purchaseArtifact('nova')">Acquire</button>
                         </div>
                     </div>
+                    
+                    <!-- Premium Vault Section -->
+                    <div class="premium-vault-section" data-feature="premiumVault">
+                        <h3><i class="fas fa-crown"></i> Premium Artifacts</h3>
+                        <div class="artifact-grid">
+                            <div class="artifact-item premium-artifact">
+                                <i class="fas fa-meteor"></i>
+                                <h4>Cosmic Multiplier</h4>
+                                <p>Double XP and Gold for 1 hour</p>
+                                <div class="artifact-cost">Cost: 300 Orbs</div>
+                                <button class="artifact-btn premium" onclick="purchaseArtifact('multiplier')">Acquire</button>
+                            </div>
+                            <div class="artifact-item premium-artifact">
+                                <i class="fas fa-infinity"></i>
+                                <h4>Eternal Essence</h4>
+                                <p>Unlimited task creation for 24 hours</p>
+                                <div class="artifact-cost">Cost: 500 Orbs</div>
+                                <button class="artifact-btn premium" onclick="purchaseArtifact('eternal')">Acquire</button>
+                            </div>
+                            <div class="artifact-item premium-artifact">
+                                <i class="fas fa-galaxy"></i>
+                                <h4>Reality Shifter</h4>
+                                <p>Transform any task to highest difficulty</p>
+                                <div class="artifact-cost">Cost: 750 Orbs</div>
+                                <button class="artifact-btn premium" onclick="purchaseArtifact('reality')">Acquire</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -158,6 +186,8 @@
     <!-- Reward Particles -->
     <div class="particles-container" id="particles-container"></div>
 
+    <script src="common.js"></script>
+    <script src="script.js"></script>
     <script src="achievements.js"></script>
     <script src="vault.js"></script>
 </body>

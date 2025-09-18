@@ -1,10 +1,8 @@
 // Subscription page functionality
 let player = {};
-let subscription = {};
 
 function initializeSubscription() {
     player = loadPlayerData();
-    subscription = loadSubscriptionData();
     updateSubscription();
     initializeSubscriptionControls();
 }
@@ -15,31 +13,12 @@ function updateSubscription() {
     updateBillingInfo();
 }
 
-function loadSubscriptionData() {
-    const defaultSubscription = {
-        plan: 'free',
-        status: 'active',
-        billingDate: null,
-        paymentMethod: null,
-        startDate: null,
-        benefits: {
-            xpMultiplier: 1.0,
-            goldMultiplier: 1.0,
-            premiumAchievements: false,
-            premiumVault: false,
-            customization: false
-        }
-    };
-    
-    const stored = localStorage.getItem('questmaster_subscription');
-    return stored ? { ...defaultSubscription, ...JSON.parse(stored) } : defaultSubscription;
-}
-
-function saveSubscriptionData() {
-    localStorage.setItem('questmaster_subscription', JSON.stringify(subscription));
+function getSubscription() {
+    return window.Subscription ? window.Subscription.getPlan() : { plan: 'free', status: 'active' };
 }
 
 function updateCurrentPlan() {
+    const subscription = getSubscription();
     const currentPlanName = document.getElementById('current-plan-name');
     const currentPlanStatus = document.getElementById('current-plan-status');
     
@@ -68,6 +47,7 @@ function updateCurrentPlan() {
 }
 
 function updatePlanButtons() {
+    const subscription = getSubscription();
     const premiumBtn = document.getElementById('subscribe-premium-btn');
     const enterpriseBtn = document.getElementById('subscribe-enterprise-btn');
     
@@ -105,14 +85,15 @@ function updatePlanButtons() {
 }
 
 function updateBillingInfo() {
+    const subscription = getSubscription();
     const billingSection = document.getElementById('billing-section');
     
     if (subscription.plan === 'free') {
-        billingSection.style.display = 'none';
+        if (billingSection) billingSection.style.display = 'none';
         return;
     }
     
-    billingSection.style.display = 'block';
+    if (billingSection) billingSection.style.display = 'block';
     
     const nextBillingDate = document.getElementById('next-billing-date');
     const billingAmount = document.getElementById('billing-amount');
@@ -120,9 +101,9 @@ function updateBillingInfo() {
     
     if (subscription.billingDate) {
         const nextDate = new Date(subscription.billingDate);
-        nextBillingDate.textContent = nextDate.toLocaleDateString();
+        if (nextBillingDate) nextBillingDate.textContent = nextDate.toLocaleDateString();
     } else {
-        nextBillingDate.textContent = 'Not set';
+        if (nextBillingDate) nextBillingDate.textContent = 'Not set';
     }
     
     const amounts = {
@@ -163,6 +144,7 @@ function initializeSubscriptionControls() {
 }
 
 function handlePlanChange(newPlan) {
+    const subscription = getSubscription();
     if (newPlan === subscription.plan) {
         return;
     }
@@ -183,21 +165,19 @@ function handlePlanChange(newPlan) {
 }
 
 function upgradeSubscription(newPlan) {
-    subscription.plan = newPlan;
-    subscription.status = 'active';
-    subscription.startDate = Date.now();
+    if (!window.Subscription) return;
     
-    // Set next billing date to 30 days from now
-    const nextBilling = new Date();
-    nextBilling.setMonth(nextBilling.getMonth() + 1);
-    subscription.billingDate = nextBilling.getTime();
-    
-    // Set payment method placeholder
-    subscription.paymentMethod = '**** **** **** 1234';
+    const newSubscription = {
+        plan: newPlan,
+        status: 'active',
+        startDate: Date.now(),
+        billingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).getTime(), // 30 days from now
+        paymentMethod: '**** **** **** 1234'
+    };
     
     // Update benefits
     if (newPlan === 'premium') {
-        subscription.benefits = {
+        newSubscription.benefits = {
             xpMultiplier: 1.5,
             goldMultiplier: 1.5,
             premiumAchievements: true,
@@ -205,7 +185,7 @@ function upgradeSubscription(newPlan) {
             customization: true
         };
     } else if (newPlan === 'enterprise') {
-        subscription.benefits = {
+        newSubscription.benefits = {
             xpMultiplier: 2.0,
             goldMultiplier: 2.0,
             premiumAchievements: true,
@@ -216,7 +196,7 @@ function upgradeSubscription(newPlan) {
         };
     }
     
-    saveSubscriptionData();
+    window.Subscription.updatePlan(newSubscription);
     updateSubscription();
     
     // Show success message
@@ -255,13 +235,14 @@ function manageBilling() {
 }
 
 function cancelSubscription() {
+    const subscription = getSubscription();
     if (subscription.plan === 'free') {
         return;
     }
     
     if (confirm('Are you sure you want to cancel your subscription? You will lose premium benefits at the end of your billing period.')) {
-        subscription.status = 'cancelled';
-        saveSubscriptionData();
+        const cancelledSubscription = { ...subscription, status: 'cancelled' };
+        window.Subscription.updatePlan(cancelledSubscription);
         showNotification('Subscription cancelled. Premium benefits will remain active until your next billing date.', 'info');
         updateSubscription();
     }

@@ -206,9 +206,13 @@ function calculateRewards(difficulty) {
 function awardRewards(xp, gold) {
     const currentLevel = player.level;
     
-    player.xp += xp;
-    player.totalXP += Math.max(0, xp);
-    player.gold = Math.max(0, player.gold + gold);
+    // Apply subscription multipliers
+    const finalXP = window.Subscription ? window.Subscription.applyXP(xp) : xp;
+    const finalGold = window.Subscription ? window.Subscription.applyGold(gold) : gold;
+    
+    player.xp += finalXP;
+    player.totalXP += Math.max(0, finalXP);
+    player.gold = Math.max(0, player.gold + finalGold);
 
     if (player.xp < 0) {
         player.xp = 0;

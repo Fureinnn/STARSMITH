@@ -41,6 +41,33 @@ body {
                       radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
 }
 
+/* Remove underlines globally */
+a {
+    text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+}
+
+.nav-item,
+.nav-item a,
+.sidebar-nav a,
+.header-nav a,
+.btn-link {
+    text-decoration: none !important;
+}
+
+.nav-item:hover,
+.nav-item a:hover,
+.sidebar-nav a:hover,
+.header-nav a:hover,
+.btn-link:hover {
+    text-decoration: none !important;
+}
+
 /* Auth Required Overlay */
 .auth-required-overlay {
     position: fixed;
@@ -2727,4 +2754,35 @@ body::before {
     .notification.show {
         transform: translateY(0);
     }
+}
+
+/* Premium Badge Styles */
+.premium-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--gradient-primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-left: 8px;
+}
+
+.premium-badge i {
+    font-size: 0.875rem;
+}
+
+/* Premium locked elements */
+.premium-locked {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.feature-locked {
+    opacity: 0.3;
+    pointer-events: none;
 }
